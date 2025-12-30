@@ -1,6 +1,6 @@
 import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { SYSTEM_INSTRUCTION } from "../constants";
-import { RealityCheckResponse } from "../types";
+import { RealityCheckResponse, UserContext } from "../types";
 
 const apiKey = process.env.API_KEY || '';
 
@@ -95,10 +95,22 @@ const responseSchema: Schema = {
   ],
 };
 
-export const analyzePlan = async (userPlan: string): Promise<RealityCheckResponse> => {
+export const analyzePlan = async (userPlan: string, context: UserContext): Promise<RealityCheckResponse> => {
   if (!apiKey) {
     throw new Error("API Key is missing. Please check your environment configuration.");
   }
+
+  const enhancedPrompt = `
+    USER PLAN:
+    ${userPlan}
+
+    USER CONTEXT / EVIDENCE:
+    - Available Budget: ${context.budget || "Not specified (Assume $0)"}
+    - Skill Level: ${context.skillLevel}
+    - Time Commitment: ${context.hoursPerDay} hours per day
+
+    Based on this context, perform the reality check.
+  `;
 
   try {
     const response = await ai.models.generateContent({
@@ -106,7 +118,7 @@ export const analyzePlan = async (userPlan: string): Promise<RealityCheckRespons
       contents: [
         {
           role: "user",
-          parts: [{ text: userPlan }],
+          parts: [{ text: enhancedPrompt }],
         },
       ],
       config: {

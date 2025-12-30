@@ -1,14 +1,15 @@
 import React from 'react';
 import { RealityCheckResponse } from '../types';
 import RadialScore from './RadialScore';
-import { AlertCircle, Activity, Brain, ShieldAlert, StopCircle } from 'lucide-react';
+import { AlertCircle, Activity, Brain, ShieldAlert, StopCircle, RefreshCw } from 'lucide-react';
 
 interface ReportCardProps {
   data: RealityCheckResponse;
   onOpenPaths: () => void;
+  onEdit: () => void;
 }
 
-const ReportCard: React.FC<ReportCardProps> = ({ data, onOpenPaths }) => {
+const ReportCard: React.FC<ReportCardProps> = ({ data, onOpenPaths, onEdit }) => {
   const getTagColor = (tag: string) => {
     switch (tag.toUpperCase()) {
       case 'POSSIBLE': return 'bg-green-500/20 text-green-400 border-green-500/30';
@@ -22,13 +23,30 @@ const ReportCard: React.FC<ReportCardProps> = ({ data, onOpenPaths }) => {
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6 pb-20">
       
-      {/* Header Section */}
+      {/* Header Section with Edit Button (Mobile Only) */}
+      <div className="flex justify-between items-center md:hidden">
+          <h2 className="text-xl font-bold text-white">Audit Results</h2>
+          <button 
+            onClick={onEdit}
+            className="flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors"
+          >
+            <RefreshCw size={14} />
+            Edit & Re-run
+          </button>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Score Card */}
-        <div className="glass-panel p-6 rounded-2xl md:col-span-1 flex flex-col items-center justify-center relative overflow-hidden">
+        {/* Score Card - Interactive Gauge */}
+        <div 
+            onClick={onEdit}
+            className="glass-panel p-6 rounded-2xl md:col-span-1 flex flex-col items-center justify-center relative overflow-hidden cursor-pointer hover:scale-[1.02] hover:bg-white/5 transition-all duration-300 group"
+        >
           <RadialScore score={data.reality_score} />
           <div className={`mt-2 px-3 py-1 rounded-full text-xs font-bold border ${getTagColor(data.reality_tag)}`}>
             {data.reality_tag}
+          </div>
+          <div className="mt-2 text-[10px] text-gray-500 uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity">
+            Click to Edit
           </div>
         </div>
 

@@ -32,9 +32,26 @@ export interface RealityCheckResponse {
   overengineering_risk: OverengineeringRisk;
 }
 
+export interface UserContext {
+  budget: string;
+  skillLevel: 'Beginner' | 'Intermediate' | 'Expert';
+  hoursPerDay: number;
+}
+
+export interface HistoryItem {
+  id: string;
+  timestamp: number;
+  input: string;
+  context: UserContext;
+  data: RealityCheckResponse;
+}
+
 export interface AppState {
   status: 'idle' | 'analyzing' | 'complete' | 'error';
   data: RealityCheckResponse | null;
   error: string | null;
   input: string;
+  context: UserContext;
+  history: HistoryItem[];
+  isHistoryOpen: boolean;
 }

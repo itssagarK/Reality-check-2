@@ -1,14 +1,15 @@
 import React from 'react';
 import { AlternativePath } from '../types';
-import { ArrowRight, GitBranch, AlertTriangle } from 'lucide-react';
+import { ArrowRight, GitBranch, AlertTriangle, PlayCircle } from 'lucide-react';
 
 interface DecisionPathPanelProps {
   paths: AlternativePath[];
   isOpen: boolean;
   onClose: () => void;
+  onSimulatePath: (path: AlternativePath) => void;
 }
 
-const DecisionPathPanel: React.FC<DecisionPathPanelProps> = ({ paths, isOpen, onClose }) => {
+const DecisionPathPanel: React.FC<DecisionPathPanelProps> = ({ paths, isOpen, onClose, onSimulatePath }) => {
   return (
     <div
       className={`fixed inset-y-0 right-0 w-full md:w-[480px] bg-[#0a0a0f] border-l border-glass-border transform transition-transform duration-300 ease-in-out z-50 ${
@@ -31,7 +32,7 @@ const DecisionPathPanel: React.FC<DecisionPathPanelProps> = ({ paths, isOpen, on
 
         <div className="space-y-6">
           {paths.map((path, index) => (
-            <div key={index} className="glass-panel rounded-xl p-5 border-l-4 border-l-blue-500">
+            <div key={index} className="glass-panel rounded-xl p-5 border-l-4 border-l-blue-500 relative group">
               <h3 className="text-xl font-bold text-white mb-2">{path.path_name}</h3>
               <p className="text-gray-300 text-sm mb-4 leading-relaxed">{path.description}</p>
               
@@ -40,7 +41,7 @@ const DecisionPathPanel: React.FC<DecisionPathPanelProps> = ({ paths, isOpen, on
                 <p className="text-sm text-gray-400">{path.why_it_passes_feasibility}</p>
               </div>
 
-              <div>
+              <div className="mb-6">
                 <h4 className="text-xs font-bold text-orange-400 uppercase tracking-widest mb-2 flex items-center gap-1">
                    <AlertTriangle size={12}/> Trade-offs
                 </h4>
@@ -53,6 +54,14 @@ const DecisionPathPanel: React.FC<DecisionPathPanelProps> = ({ paths, isOpen, on
                   ))}
                 </ul>
               </div>
+
+              <button 
+                onClick={() => onSimulatePath(path)}
+                className="w-full py-2 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/50 text-blue-300 rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition-colors"
+              >
+                <PlayCircle size={16} />
+                Analyze This Path
+              </button>
             </div>
           ))}
         </div>

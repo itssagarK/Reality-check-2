@@ -15,7 +15,7 @@
               mono: ['JetBrains Mono', 'monospace'],
             },
             colors: {
-              glass: 'rgba(255, 255, 255, 0.05)',
+              glass: 'rgba(0, 0, 0, 0.6)', // Darker 60% opacity for better contrast
               'glass-border': 'rgba(255, 255, 255, 0.1)',
               'glass-hover': 'rgba(255, 255, 255, 0.1)',
             }
@@ -34,11 +34,11 @@
         color: #e5e5e5;
       }
       .glass-panel {
-        background: rgba(20, 20, 25, 0.6);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        background: rgba(10, 10, 15, 0.65); /* Increased opacity for better text readability */
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
       }
       .scrollbar-hide::-webkit-scrollbar {
           display: none;
@@ -46,6 +46,27 @@
       .scrollbar-hide {
           -ms-overflow-style: none;
           scrollbar-width: none;
+      }
+      /* Custom Range Input */
+      input[type=range] {
+        -webkit-appearance: none; 
+        background: transparent; 
+      }
+      input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background: #ffffff;
+        cursor: pointer;
+        margin-top: -6px; 
+      }
+      input[type=range]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 4px;
+        cursor: pointer;
+        background: rgba(255,255,255,0.2);
+        border-radius: 2px;
       }
     </style>
   <script type="importmap">
