@@ -1,6 +1,6 @@
 import React from 'react';
 import { UserContext } from '../types';
-import { Sparkles, DollarSign, Clock, Trophy, Settings2, ChevronDown } from 'lucide-react';
+import { Sparkles, DollarSign, Clock, Trophy, ChevronRight, Edit2 } from 'lucide-react';
 import { INITIAL_INPUT_PLACEHOLDER } from '../constants';
 
 interface InputSectionProps {
@@ -15,6 +15,8 @@ interface InputSectionProps {
   isGlowing?: boolean;
   isParametersVisible?: boolean;
   onToggleParameters?: () => void;
+  isCollapsed?: boolean;
+  onToggleCollapse?: () => void;
 }
 
 const InputSection: React.FC<InputSectionProps> = ({ 
@@ -28,194 +30,159 @@ const InputSection: React.FC<InputSectionProps> = ({
   inputRef,
   isGlowing = false,
   isParametersVisible = true,
-  onToggleParameters
+  onToggleParameters,
+  isCollapsed = false,
+  onToggleCollapse
 }) => {
   const isAnalyzing = status === 'analyzing';
 
+  // --- Collapsed State (Spine Mode) ---
+  if (isCollapsed && isSidebar) {
+    return (
+      <div 
+        onClick={onToggleCollapse}
+        className="h-full w-full flex flex-col items-center py-6 cursor-pointer hover:bg-white/5 transition-colors group border-r border-white/10 bg-[#050505]"
+        title="Expand Audit Parameters"
+      >
+        <div className="flex-1 flex items-center justify-center">
+             <span className="writing-vertical-lr transform rotate-180 text-xs font-mono font-bold tracking-[0.3em] text-gray-500 group-hover:text-white transition-colors uppercase whitespace-nowrap">
+                Audit Parameters
+             </span>
+        </div>
+      </div>
+    );
+  }
+
+  // --- Expanded State (Terminal Mode) ---
   return (
-    <form onSubmit={onSubmit} className={`flex flex-col h-full ${isSidebar ? '' : 'max-w-2xl mx-auto'}`}>
+    <form onSubmit={onSubmit} className={`flex flex-col h-screen w-full bg-[#050505] relative overflow-hidden`}>
+       
        {!isSidebar && (
-        <div className="text-center mb-8 animate-fade-in-up">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-gray-500">
+        <div className="text-center pt-8 pb-4 px-4 animate-fade-in-up shrink-0">
+            <h2 className="text-3xl md:text-5xl font-bold mb-3 text-white tracking-tight">
               Audit your ambition.
             </h2>
-            <p className="text-gray-400 text-lg">
-              Evidence-based feasibility analysis. No motivation, just data.
+            <p className="text-gray-400 text-base md:text-lg font-mono">
+              Evidence-based feasibility analysis.<br/>No motivation, just data.
             </p>
         </div>
       )}
 
-      {/* Main Container with Neon Gradient Border Effect */}
-      <div 
-        className={`
-            relative flex flex-col transition-all duration-500 ease-in-out
-            ${isSidebar 
-                ? 'h-full md:rounded-none rounded-b-2xl p-[1.5px]' 
-                : 'glass-panel rounded-2xl p-2'
-            }
-            ${isGlowing ? 'shadow-[0_0_25px_rgba(34,211,238,0.4)] scale-[1.01]' : 'shadow-none scale-100'}
-        `}
-        style={isSidebar ? {
-            background: 'linear-gradient(180deg, rgba(34,211,238,1) 0%, rgba(124,58,237,1) 100%)',
-            boxShadow: '0 0 5px rgba(124,58,237, 0.5)'
-        } : {}}
-      >
-        {/* Inner Content Container */}
-        <div className={`
-            flex flex-col h-full w-full bg-[#050505] relative overflow-hidden
-            ${isSidebar ? 'md:rounded-none rounded-b-[14px]' : 'rounded-xl'}
-        `}>
-            
-            {/* Main Text Area - Dynamic Height */}
-            <div className={`
-                relative flex-grow transition-all duration-500
-                ${isSidebar ? 'min-h-[500px]' : 'min-h-[50vh]'}
-            `}>
-                {/* Aurora Glow Effect for Text Area (Active State) */}
-                <div className={`absolute inset-0 pointer-events-none transition-opacity duration-500 ${isGlowing || !isParametersVisible ? 'opacity-100' : 'opacity-0'}`}>
-                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent blur-sm"></div>
+      {/* Terminal Container */}
+      <div className={`
+          flex flex-col flex-1 relative min-h-0
+          ${isSidebar ? 'h-full border-none' : 'max-w-3xl mx-auto w-full border border-white/10 shadow-2xl mb-4'}
+          ${isGlowing ? 'shadow-[0_0_40px_rgba(6,182,212,0.1)] border-cyan-500/40' : ''}
+          bg-[#08090f] transition-all duration-300
+      `}>
+          
+          {/* Terminal Header - Only visible in sidebar mode */}
+          {isSidebar && (
+            <div className="shrink-0 h-14 flex items-center justify-between px-6 border-b border-white/5 bg-[#0a0b10]">
+                <div className="flex items-center gap-3">
+                    <div className={`w-2 h-2 rounded-sm ${isAnalyzing ? 'bg-yellow-500 animate-pulse' : 'bg-cyan-500 shadow-[0_0_8px_cyan]'}`}></div>
+                    <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-cyan-500/70 uppercase">
+                        Input // Audit Parameters
+                    </span>
                 </div>
-
-                <textarea
-                    ref={inputRef as React.RefObject<HTMLTextAreaElement>}
-                    value={input}
-                    onChange={(e) => onInputChange(e.target.value)}
-                    placeholder={INITIAL_INPUT_PLACEHOLDER}
-                    className={`
-                        w-full h-full bg-transparent text-white p-6 focus:outline-none placeholder:text-gray-600 font-mono resize-none
-                        ${isSidebar ? 'text-sm' : 'text-lg'}
-                        scrollbar-hide
-                    `}
-                    style={{
-                        overflowY: 'auto'
-                    }}
-                />
-            </div>
-
-            {/* Collapsed Parameters Breadcrumb */}
-            {isSidebar && !isParametersVisible && (
-                <button
-                    type="button"
-                    onClick={onToggleParameters}
-                    className="w-full py-3 px-6 border-t border-white/5 hover:bg-white/5 flex items-center justify-between group transition-colors"
-                >
-                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-500 group-hover:text-cyan-400 transition-colors">
-                        <Settings2 size={14} />
-                        <span>Edit Parameters</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <span className="text-[10px] text-gray-600 bg-white/5 px-2 py-1 rounded">
-                            {context.budget || '$0'} • {context.hoursPerDay}h • {context.skillLevel}
-                        </span>
-                        <ChevronDown size={14} className="text-gray-500 transform rotate-180" />
-                    </div>
-                </button>
-            )}
-
-            {/* Evidence & Constraints - Collapsible Section */}
-            <div className={`
-                transition-all duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)] overflow-hidden
-                ${isParametersVisible ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}
-            `}>
-                <div className={`
-                    px-6 py-6 space-y-4
-                    ${isSidebar 
-                        ? 'border-t border-white/5 bg-gradient-to-t from-white/[0.03] to-transparent' 
-                        : 'bg-black/20 border-t border-white/5'
-                    }
-                `}>
-                    <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500">Evidence & Constraints</h3>
-                        {isSidebar && onToggleParameters && (
-                             <button type="button" onClick={onToggleParameters} className="text-gray-600 hover:text-white transition-colors">
-                                <ChevronDown size={14} />
-                             </button>
-                        )}
-                    </div>
-                    
-                    {/* Grid for inputs */}
-                    <div className={`grid gap-4 ${isSidebar ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-3'}`}>
-                        
-                        {/* Budget */}
-                        <div className="flex items-center gap-3 bg-white/5 p-4 rounded-xl border border-white/5 focus-within:border-cyan-500/50 transition-colors">
-                            <DollarSign size={18} className="text-green-400 shrink-0"/>
-                            <div className="w-full">
-                                <span className="text-[10px] text-gray-500 uppercase font-bold block mb-1">Budget</span>
-                                <input 
-                                    type="text" 
-                                    value={context.budget}
-                                    onChange={(e) => onContextChange({...context, budget: e.target.value})}
-                                    placeholder="e.g. $500"
-                                    className="bg-transparent w-full text-sm focus:outline-none text-white placeholder:text-gray-600"
-                                />
-                            </div>
-                        </div>
-
-                        {/* Hours */}
-                        <div className="flex items-center gap-3 bg-white/5 p-4 rounded-xl border border-white/5 focus-within:border-cyan-500/50 transition-colors">
-                            <Clock size={18} className="text-blue-400 shrink-0"/>
-                            <div className="flex flex-col w-full">
-                                <div className="flex justify-between text-[10px] text-gray-500 uppercase font-bold mb-1">
-                                    <span>Daily Hours</span>
-                                    <span className="text-white font-mono">{context.hoursPerDay}h</span>
-                                </div>
-                                <input 
-                                    type="range" 
-                                    min="0.5" 
-                                    max="12" 
-                                    step="0.5"
-                                    value={context.hoursPerDay}
-                                    onChange={(e) => onContextChange({...context, hoursPerDay: parseFloat(e.target.value)})}
-                                    className="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                                />
-                            </div>
-                        </div>
-
-                        {/* Skill Level */}
-                        <div className="flex items-center gap-3 bg-white/5 p-4 rounded-xl border border-white/5 focus-within:border-cyan-500/50 transition-colors relative">
-                            <Trophy size={18} className="text-yellow-400 shrink-0"/>
-                            <div className="w-full">
-                                <span className="text-[10px] text-gray-500 uppercase font-bold block mb-1">Skill Level</span>
-                                <select 
-                                    value={context.skillLevel}
-                                    onChange={(e) => onContextChange({...context, skillLevel: e.target.value as any})}
-                                    className="bg-transparent w-full text-sm focus:outline-none text-white appearance-none cursor-pointer"
-                                >
-                                    <option value="Beginner" className="bg-black text-gray-300">Beginner</option>
-                                    <option value="Intermediate" className="bg-black text-gray-300">Intermediate</option>
-                                    <option value="Expert" className="bg-black text-gray-300">Expert</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Action Button - Pinned to bottom */}
-            <div className={`
-                p-4 shrink-0
-                ${isSidebar ? 'bg-black/40 border-t border-white/5' : 'bg-black/40 border-t border-white/5'}
-            `}>
-            <button
-                type="submit"
-                disabled={!input.trim() || isAnalyzing}
-                className={`w-full py-4 font-bold rounded-xl transition-all flex items-center justify-center gap-2 
-                    ${isAnalyzing 
-                        ? 'bg-purple-900/50 text-purple-300 cursor-wait' 
-                        : 'bg-white text-black hover:bg-gray-200 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]'
-                    }`}
-            >
-                {isAnalyzing ? (
-                    <>Analyzing...</>
-                ) : (
-                    <>
-                    {status === 'complete' ? 'Re-Audit Plan' : 'Run Audit'}
-                    <Sparkles size={16} />
-                    </>
+                {onToggleCollapse && (
+                    <button type="button" onClick={onToggleCollapse} className="text-gray-600 hover:text-white transition-colors">
+                        <ChevronRight size={18} className="rotate-180"/>
+                    </button>
                 )}
-            </button>
             </div>
-        </div>
+          )}
+
+          {/* Text Area Container - Fills available vertical space */}
+          <div className="flex-1 relative bg-[#08090f] min-h-0"> 
+              <textarea
+                  ref={inputRef as React.RefObject<HTMLTextAreaElement>}
+                  value={input}
+                  onChange={(e) => onInputChange(e.target.value)}
+                  placeholder={INITIAL_INPUT_PLACEHOLDER}
+                  className={`
+                      w-full h-full bg-transparent p-5 md:p-8 resize-none focus:outline-none 
+                      font-mono text-base md:text-lg leading-[1.8] text-gray-200 placeholder:text-gray-700
+                      selection:bg-cyan-900/50
+                      scrollbar-hide
+                  `}
+                  spellCheck={false}
+              />
+          </div>
+
+          {/* Constraints & Actions Footer (Merged) */}
+          <div className="shrink-0 border-t border-white/5 bg-[#0a0b10] z-20">
+              <div className={`
+                  grid grid-cols-1 ${isParametersVisible ? 'md:grid-cols-4' : 'md:grid-cols-1'} gap-4 p-4
+              `}>
+                  {isParametersVisible && (
+                    <>
+                      {/* Budget - Cyan Glow */}
+                      <div className="bg-[#0a0b10] p-3 flex flex-col gap-1 transition-colors border border-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+                          <label className="text-[10px] font-bold text-cyan-400 uppercase flex items-center gap-2 mb-1">
+                                <DollarSign size={12}/> Budget
+                          </label>
+                          <input 
+                              type="text" 
+                              value={context.budget}
+                              onChange={(e) => onContextChange({...context, budget: e.target.value})}
+                              placeholder="N/A"
+                              className="bg-transparent text-sm text-white focus:outline-none font-mono placeholder:text-gray-600 w-full font-bold"
+                          />
+                      </div>
+
+                      {/* Hours - Blue Glow (Numeric Input) */}
+                      <div className="bg-[#0a0b10] p-3 flex flex-col gap-1 transition-colors relative border border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
+                          <label className="text-[10px] font-bold text-blue-400 uppercase flex items-center gap-2 mb-1">
+                                <Clock size={12}/> Time (Hrs/Day)
+                          </label>
+                          <input 
+                              type="number" 
+                              step="0.5"
+                              value={context.hoursPerDay}
+                              onChange={(e) => onContextChange({...context, hoursPerDay: parseFloat(e.target.value)})}
+                              className="bg-transparent text-sm text-white focus:outline-none font-mono placeholder:text-gray-600 w-full font-bold"
+                          />
+                      </div>
+
+                      {/* Skill - Purple Glow */}
+                      <div className="bg-[#0a0b10] p-3 flex flex-col gap-1 transition-colors border border-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+                          <label className="text-[10px] font-bold text-purple-400 uppercase flex items-center gap-2 mb-1">
+                                <Trophy size={12}/> Skill
+                          </label>
+                          <select 
+                              value={context.skillLevel}
+                              onChange={(e) => onContextChange({...context, skillLevel: e.target.value as any})}
+                              className="bg-transparent text-sm text-white focus:outline-none font-mono appearance-none cursor-pointer w-full font-bold"
+                          >
+                              <option value="Beginner" className="bg-black">Beginner</option>
+                              <option value="Intermediate" className="bg-black">Intermediate</option>
+                              <option value="Expert" className="bg-black">Expert</option>
+                          </select>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Action Button - Moved Inline */}
+                  <button
+                      type="submit"
+                      disabled={!input.trim() || isAnalyzing}
+                      className={`h-full min-h-[58px] font-mono font-bold uppercase tracking-[0.15em] text-xs md:text-sm transition-all flex items-center justify-center gap-2
+                        ${isAnalyzing 
+                            ? 'bg-gray-900 text-gray-600 cursor-not-allowed' 
+                            : 'bg-cyan-600 hover:bg-cyan-500 text-black shadow-[inset_0_0_20px_rgba(0,0,0,0.2)]'
+                        }`}
+                  >
+                      {isAnalyzing ? (
+                        <>Processing...</>
+                      ) : (
+                        <>
+                           Run Audit <Sparkles size={16} fill="black" />
+                        </>
+                      )}
+                  </button>
+              </div>
+          </div>
       </div>
     </form>
   );

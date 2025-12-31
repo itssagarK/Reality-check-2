@@ -4,7 +4,7 @@ import { analyzePlan } from './services/geminiService';
 import ReportCard from './components/ReportCard';
 import DecisionPathPanel from './components/DecisionPathPanel';
 import InputSection from './components/InputSection';
-import { Sparkles, Loader2, AlertOctagon, RotateCcw, Clock, X, ChevronRight } from 'lucide-react';
+import { Sparkles, Loader2, AlertOctagon, RotateCcw, Clock, X, ChevronRight, SlidersHorizontal } from 'lucide-react';
 
 const App: React.FC = () => {
   const [state, setState] = useState<AppState>({
@@ -24,6 +24,7 @@ const App: React.FC = () => {
   const [isPathPanelOpen, setIsPathPanelOpen] = useState(false);
   const [isSidebarGlowing, setIsSidebarGlowing] = useState(false);
   const [isParametersVisible, setIsParametersVisible] = useState(true);
+  const [isInputCollapsed, setIsInputCollapsed] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const performAnalysis = async (inputStr: string, contextData: UserContext) => {
@@ -45,6 +46,10 @@ const App: React.FC = () => {
         data: result,
         history: [newHistoryItem, ...prev.history]
       }));
+      
+      // Collapse input sidebar on success for "slide back" effect
+      setIsInputCollapsed(true);
+      
     } catch (err: any) {
       setState(prev => ({ 
         ...prev, 
@@ -57,7 +62,6 @@ const App: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!state.input.trim()) return;
-    setIsParametersVisible(false); // Auto-hide parameters on submit
     performAnalysis(state.input, state.context);
   };
 
@@ -70,6 +74,7 @@ const App: React.FC = () => {
     }));
     
     setIsPathPanelOpen(false);
+    setIsInputCollapsed(false); // Re-open input for context
     performAnalysis(newInput, state.context);
   };
 
@@ -88,6 +93,7 @@ const App: React.FC = () => {
     }));
     setIsParametersVisible(true);
     setIsPathPanelOpen(false);
+    setIsInputCollapsed(false);
   };
 
   const restoreHistory = (item: HistoryItem) => {
@@ -99,26 +105,28 @@ const App: React.FC = () => {
       data: item.data,
       isHistoryOpen: false
     }));
-    setIsParametersVisible(true); // Reveal parameters to show context
+    setIsParametersVisible(true); 
     setIsPathPanelOpen(false);
+    setIsInputCollapsed(true); // Keep result focused
   };
 
   const handleEdit = () => {
-    // Reveal parameters
-    setIsParametersVisible(true);
-    
-    // Trigger visual cue on sidebar
-    setIsSidebarGlowing(true);
-    setTimeout(() => setIsSidebarGlowing(false), 1500);
-
-    // Scroll to input on mobile
-    if (window.innerWidth < 768) {
-       window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (isInputCollapsed) {
+        setIsInputCollapsed(false);
+        setIsParametersVisible(true);
+        setIsSidebarGlowing(true);
+        setTimeout(() => setIsSidebarGlowing(false), 1500);
+        // Scroll to input on mobile
+        if (window.innerWidth < 768) {
+           window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        // Focus input on desktop
+        setTimeout(() => {
+            inputRef.current?.focus();
+        }, 300);
+    } else {
+        setIsInputCollapsed(true);
     }
-    // Focus input on desktop
-    setTimeout(() => {
-        inputRef.current?.focus();
-    }, 300);
   };
 
   const formatDate = (ts: number) => {
@@ -128,23 +136,39 @@ const App: React.FC = () => {
   const showSidebar = state.status !== 'idle';
 
   return (
-    <div className="min-h-screen text-gray-100 font-sans selection:bg-purple-500/30 flex flex-col">
+    <div className="min-h-screen text-gray-100 font-sans selection:bg-cyan-500/30 flex flex-col overflow-hidden">
       
       {/* Navigation / Header */}
-      <nav className="fixed top-0 w-full z-40 border-b border-white/5 bg-[#050505]/90 backdrop-blur-md">
-        <div className="w-full px-6 h-16 flex items-center justify-between">
+      <nav className="fixed top-0 w-full z-40 border-b border-white/5 bg-[#050505]/90 backdrop-blur-md h-16">
+        <div className="w-full px-6 h-full flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer" onClick={resetAnalysis}>
-            <div className="w-8 h-8 rounded bg-gradient-to-tr from-purple-600 to-blue-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded bg-gradient-to-tr from-cyan-600 to-blue-600 flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.3)]">
                 <Sparkles size={16} className="text-white" />
             </div>
             <h1 className="font-mono font-bold text-lg tracking-tight hidden md:block">Reality Check AI</h1>
           </div>
           
           <div className="flex items-center gap-3">
+             
+             {/* Parameters Toggle (Moved here) */}
+             {state.status !== 'idle' && (
+                <button 
+                  onClick={handleEdit}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-sm text-xs font-bold transition-all uppercase tracking-wider
+                     ${!isInputCollapsed 
+                        ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30' 
+                        : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
+                     }`}
+                >
+                  <SlidersHorizontal size={14} />
+                  Parameters
+                </button>
+             )}
+
              {state.history.length > 0 && (
                 <button 
                   onClick={() => setState(prev => ({ ...prev, isHistoryOpen: true }))}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-sm text-xs font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-colors uppercase tracking-wider"
                 >
                   <Clock size={16} />
                   History
@@ -152,7 +176,7 @@ const App: React.FC = () => {
              )}
 
              {state.status !== 'idle' && (
-                <button onClick={resetAnalysis} className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-black hover:bg-gray-200 transition-colors">
+                <button onClick={resetAnalysis} className="flex items-center gap-2 px-3 py-1.5 rounded-sm text-xs font-bold bg-white text-black hover:bg-gray-200 transition-colors uppercase tracking-wider">
                     <RotateCcw size={14}/> 
                     New Audit
                 </button>
@@ -162,14 +186,18 @@ const App: React.FC = () => {
       </nav>
 
       {/* Main Layout - Flex Container */}
-      <div className="flex-1 flex flex-col md:flex-row pt-16 h-[calc(100vh-64px)] overflow-hidden">
+      <div className="flex-1 flex flex-col md:flex-row pt-16 h-screen overflow-hidden">
         
         {/* Left Panel (Input Sidebar) */}
         <div className={`
-            transition-all duration-500 ease-in-out
-            ${showSidebar ? 'w-full md:w-[400px]' : 'w-full'}
-            ${showSidebar ? 'h-auto md:h-full overflow-y-auto md:overflow-hidden' : 'flex items-center justify-center p-4'}
-            bg-[#050505] relative z-10
+            relative z-30 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]
+            bg-[#050505] border-r border-white/5 flex flex-col
+            ${showSidebar 
+                ? (isInputCollapsed ? 'w-full md:w-[60px]' : 'w-full md:w-[700px]') 
+                : 'w-full'
+            }
+            ${showSidebar ? 'h-[60px] md:h-full' : 'h-full'}
+            ${isInputCollapsed ? 'overflow-hidden' : 'overflow-hidden'}
         `}>
              <InputSection 
                 inputRef={inputRef}
@@ -183,30 +211,32 @@ const App: React.FC = () => {
                 isGlowing={isSidebarGlowing}
                 isParametersVisible={isParametersVisible}
                 onToggleParameters={() => setIsParametersVisible(!isParametersVisible)}
+                isCollapsed={isInputCollapsed}
+                onToggleCollapse={() => setIsInputCollapsed(!isInputCollapsed)}
              />
         </div>
 
         {/* Right Panel (Results) */}
         {showSidebar && (
-            <div className="flex-1 overflow-y-auto bg-black/20 relative">
-                <div className="max-w-4xl mx-auto p-4 md:p-8">
+            <div className={`flex-1 overflow-y-auto bg-black/20 relative transition-all duration-500`}>
+                <div className={`mx-auto p-4 md:p-12 pb-32 transition-all duration-500 ${isInputCollapsed ? 'max-w-[1600px]' : 'max-w-5xl'}`}>
                     
                     {state.status === 'analyzing' && !state.data && (
-                        <div className="flex flex-col items-center justify-center h-full min-h-[50vh]">
-                            <Loader2 size={48} className="text-purple-500 animate-spin mb-6" />
-                            <h3 className="text-xl font-bold text-white mb-2">Analyzing Constraints...</h3>
-                            <p className="text-gray-400 animate-pulse">Checking feasibility against known benchmarks</p>
+                        <div className="flex flex-col items-center justify-center h-[60vh] animate-fade-in">
+                            <Loader2 size={48} className="text-cyan-500 animate-spin mb-6" />
+                            <h3 className="text-xl font-bold text-white mb-2 font-mono uppercase tracking-widest">Analyzing Constraints</h3>
+                            <p className="text-gray-400 animate-pulse text-sm">Checking feasibility against known benchmarks...</p>
                         </div>
                     )}
 
                     {state.status === 'error' && (
-                        <div className="glass-panel border-red-500/30 p-8 rounded-2xl flex flex-col items-center text-center mt-10">
+                        <div className="border border-red-500/30 bg-red-500/5 p-8 rounded-none flex flex-col items-center text-center mt-20">
                             <AlertOctagon size={48} className="text-red-500 mb-4" />
-                            <h3 className="text-xl font-bold text-white mb-2">Analysis Failed</h3>
-                            <p className="text-red-300 mb-6">{state.error}</p>
+                            <h3 className="text-xl font-bold text-white mb-2 font-mono uppercase">Analysis Failed</h3>
+                            <p className="text-red-300 mb-6 font-mono text-sm">{state.error}</p>
                             <button 
                                 onClick={() => setState(prev => ({...prev, status: 'idle', error: null}))}
-                                className="px-6 py-2 border border-white/20 hover:bg-white/10 rounded-lg transition-colors"
+                                className="px-6 py-2 border border-white/20 hover:bg-white/10 rounded-none transition-colors uppercase text-sm font-bold"
                             >
                                 Reset System
                             </button>
@@ -241,11 +271,11 @@ const App: React.FC = () => {
       {/* History Modal Overlay */}
       {state.isHistoryOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-            <div className="w-full max-w-md bg-[#0a0a0f] border border-glass-border rounded-2xl shadow-2xl max-h-[80vh] flex flex-col">
+            <div className="w-full max-w-md bg-[#0a0a0f] border border-glass-border rounded-lg shadow-2xl max-h-[80vh] flex flex-col">
                 <div className="flex items-center justify-between p-4 border-b border-white/5">
-                    <h3 className="font-bold text-lg flex items-center gap-2">
-                        <Clock size={20} className="text-purple-400"/>
-                        Audit History
+                    <h3 className="font-bold text-lg flex items-center gap-2 font-mono">
+                        <Clock size={20} className="text-cyan-400"/>
+                        HISTORY
                     </h3>
                     <button 
                         onClick={() => setState(prev => ({ ...prev, isHistoryOpen: false }))}
@@ -259,20 +289,20 @@ const App: React.FC = () => {
                         <button 
                             key={item.id}
                             onClick={() => restoreHistory(item)}
-                            className="w-full text-left p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all group"
+                            className="w-full text-left p-4 bg-white/5 hover:bg-white/10 border border-white/5 transition-all group rounded-sm"
                         >
                             <div className="flex items-center justify-between mb-2">
-                                <span className={`text-xs font-bold px-2 py-0.5 rounded border 
+                                <span className={`text-[10px] font-bold px-2 py-0.5 border uppercase tracking-wider
                                     ${item.data.reality_score < 50 ? 'border-red-500/30 text-red-400 bg-red-500/10' : 
                                       item.data.reality_score < 70 ? 'border-yellow-500/30 text-yellow-400 bg-yellow-500/10' : 
                                       'border-green-500/30 text-green-400 bg-green-500/10'}`}>
                                     Score: {item.data.reality_score}
                                 </span>
-                                <span className="text-xs text-gray-500">{formatDate(item.timestamp)}</span>
+                                <span className="text-xs text-gray-500 font-mono">{formatDate(item.timestamp)}</span>
                             </div>
-                            <p className="text-sm text-gray-300 line-clamp-2">{item.input}</p>
-                            <div className="mt-2 text-xs text-gray-500 flex items-center gap-1 group-hover:text-blue-400 transition-colors">
-                                Restore this audit <ChevronRight size={12} />
+                            <p className="text-sm text-gray-300 line-clamp-2 font-mono">{item.input}</p>
+                            <div className="mt-2 text-xs text-gray-500 flex items-center gap-1 group-hover:text-cyan-400 transition-colors font-mono">
+                                Restore <ChevronRight size={12} />
                             </div>
                         </button>
                     ))}
