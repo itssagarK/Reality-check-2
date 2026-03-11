@@ -1,10 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { AppState, AlternativePath, UserContext, HistoryItem } from './types';
 import { analyzePlan } from './services/geminiService';
 import ReportCard from './components/ReportCard';
 import DecisionPathPanel from './components/DecisionPathPanel';
 import InputSection from './components/InputSection';
-import { Sparkles, Loader2, AlertOctagon, RotateCcw, Clock, X, ChevronRight, SlidersHorizontal } from 'lucide-react';
+import { Sparkles, Loader2, AlertOctagon, RotateCcw, Clock, X, ChevronRight, SlidersHorizontal, Share2, Check } from 'lucide-react';
+import LZString from 'lz-string';
 
 const App: React.FC = () => {
   const [state, setState] = useState<AppState>({
@@ -25,7 +26,32 @@ const App: React.FC = () => {
   const [isSidebarGlowing, setIsSidebarGlowing] = useState(false);
   const [isParametersVisible, setIsParametersVisible] = useState(true);
   const [isInputCollapsed, setIsInputCollapsed] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      try {
+        const decompressed = LZString.decompressFromEncodedURIComponent(hash);
+        if (decompressed) {
+          const parsed = JSON.parse(decompressed);
+          if (parsed && parsed.input && parsed.context && parsed.data) {
+            setState(prev => ({
+              ...prev,
+              status: 'complete',
+              input: parsed.input,
+              context: parsed.context,
+              data: parsed.data
+            }));
+            setIsInputCollapsed(true);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to parse shared report:', err);
+      }
+    }
+  }, []);
 
   const performAnalysis = async (inputStr: string, contextData: UserContext) => {
     setState(prev => ({ ...prev, status: 'analyzing', error: null }));
@@ -129,6 +155,25 @@ const App: React.FC = () => {
     }
   };
 
+  const handleShare = async () => {
+    if (!state.data) return;
+    try {
+      const shareData = {
+        input: state.input,
+        context: state.context,
+        data: state.data
+      };
+      const compressed = LZString.compressToEncodedURIComponent(JSON.stringify(shareData));
+      const url = `${window.location.origin}${window.location.pathname}#${compressed}`;
+      await navigator.clipboard.writeText(url);
+      window.location.hash = compressed;
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy to clipboard:', err);
+    }
+  };
+
   const formatDate = (ts: number) => {
     return new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
@@ -172,6 +217,16 @@ const App: React.FC = () => {
                 >
                   <Clock size={16} />
                   History
+                </button>
+             )}
+
+             {state.data && (
+                <button 
+                  onClick={handleShare}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-sm text-xs font-bold text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/10 transition-colors uppercase tracking-wider border border-cyan-500/30"
+                >
+                  {isCopied ? <Check size={14} /> : <Share2 size={14} />}
+                  {isCopied ? 'Copied URL' : 'Share Report'}
                 </button>
              )}
 
