@@ -255,4 +255,3 @@ If AI can help people challenge their assumptions before committing to a plan, i
 # Author
 
 **Sagar**  
-GitHub: https://github.com/itssagarK
