@@ -4,9 +4,6 @@
 
 Most AI tools tell you what you want to hear. Reality Check AI tells you what you need to know.
 
-[![Built for Scaler AI Build Challenge](https://img.shields.io/badge/Scaler-AI%20Build%20Challenge-blue?style=flat-square)](https://scaler.com)
-[![React](https://img.shields.io/badge/React-+Vite-61DAFB?style=flat-square&logo=react)](https://react.dev)
-[![Powered by Gemini](https://img.shields.io/badge/AI-Google%20Gemini-4285F4?style=flat-square&logo=google)](https://ai.google.dev)
 
 ---
 
