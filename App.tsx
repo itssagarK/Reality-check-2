@@ -4,7 +4,8 @@ import { analyzePlan } from './services/geminiService';
 import ReportCard from './components/ReportCard';
 import DecisionPathPanel from './components/DecisionPathPanel';
 import InputSection from './components/InputSection';
-import { Sparkles, Loader2, AlertOctagon, RotateCcw, Clock, X, ChevronRight, SlidersHorizontal, Share2, Check } from 'lucide-react';
+import Logo from './components/Logo';
+import { Loader2, AlertOctagon, RotateCcw, Clock, X, ChevronRight, SlidersHorizontal, Share2, Check } from 'lucide-react';
 import LZString from 'lz-string';
 
 const App: React.FC = () => {
@@ -186,11 +187,13 @@ const App: React.FC = () => {
       {/* Navigation / Header */}
       <nav className="fixed top-0 w-full z-40 border-b border-white/5 bg-[#050505]/90 backdrop-blur-md h-16">
         <div className="w-full px-6 h-full flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={resetAnalysis}>
-            <div className="w-8 h-8 rounded bg-gradient-to-tr from-cyan-600 to-blue-600 flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.3)]">
-                <Sparkles size={16} className="text-white" />
+          <div className="flex items-center gap-3 cursor-pointer" onClick={resetAnalysis}>
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.4)] border border-white/20">
+                <Logo size={20} className="text-white" />
             </div>
-            <h1 className="font-mono font-bold text-lg tracking-tight hidden md:block">Reality Check AI</h1>
+            <h1 className="font-mono font-bold text-xl tracking-tight hidden md:flex items-center gap-1">
+              Reality<span className="text-cyan-400">Check</span><span className="text-gray-500 text-sm ml-0.5">.ai</span>
+            </h1>
           </div>
           
           <div className="flex items-center gap-3">
