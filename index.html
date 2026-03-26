@@ -5,19 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reality Check AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
+              display: ['Outfit', 'sans-serif'],
               mono: ['JetBrains Mono', 'monospace'],
             },
             colors: {
-              glass: 'rgba(0, 0, 0, 0.6)', // Darker 60% opacity for better contrast
-              'glass-border': 'rgba(255, 255, 255, 0.1)',
-              'glass-hover': 'rgba(255, 255, 255, 0.1)',
+              glass: 'rgba(15, 23, 42, 0.6)', 
+              'glass-border': 'rgba(255, 255, 255, 0.08)',
+              'glass-hover': 'rgba(255, 255, 255, 0.12)',
+              primary: '#38bdf8',
+              secondary: '#6366f1',
             }
           }
         }
@@ -25,20 +28,23 @@
     </script>
     <style>
       body {
-        background-color: #050505;
+        background-color: #020617;
         background-image: 
-          radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-          radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
-          radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+          radial-gradient(circle at 50% -20%, rgba(56, 189, 248, 0.15) 0%, transparent 80%),
+          radial-gradient(circle at 0% 100%, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
         background-attachment: fixed;
-        color: #e5e5e5;
+        color: #f1f5f9;
+        font-family: 'Inter', sans-serif;
+      }
+      h1, h2, h3, h4, .font-display {
+        font-family: 'Outfit', sans-serif;
       }
       .glass-panel {
-        background: rgba(10, 10, 15, 0.65); /* Increased opacity for better text readability */
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        background: rgba(15, 23, 42, 0.7); 
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
       }
       .scrollbar-hide::-webkit-scrollbar {
           display: none;

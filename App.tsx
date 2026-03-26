@@ -182,17 +182,17 @@ const App: React.FC = () => {
   const showSidebar = state.status !== 'idle';
 
   return (
-    <div className="min-h-screen text-gray-100 font-sans selection:bg-cyan-500/30 flex flex-col overflow-hidden">
+    <div className="min-h-screen text-slate-100 font-sans selection:bg-sky-500/30 flex flex-col overflow-hidden">
       
       {/* Navigation / Header */}
-      <nav className="fixed top-0 w-full z-40 border-b border-white/5 bg-[#050505]/90 backdrop-blur-md h-16">
+      <nav className="fixed top-0 w-full z-40 border-b border-white/5 bg-slate-950/90 backdrop-blur-md h-16">
         <div className="w-full px-6 h-full flex items-center justify-between">
           <div className="flex items-center gap-3 cursor-pointer" onClick={resetAnalysis}>
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.4)] border border-white/20">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center shadow-[0_0_20px_rgba(56,189,248,0.4)] border border-white/20">
                 <Logo size={20} className="text-white" />
             </div>
-            <h1 className="font-mono font-bold text-xl tracking-tight hidden md:flex items-center gap-1">
-              Reality<span className="text-cyan-400">Check</span><span className="text-gray-500 text-sm ml-0.5">.ai</span>
+            <h1 className="font-display font-bold text-xl tracking-tight hidden md:flex items-center gap-1">
+              Reality<span className="text-sky-400">Check</span><span className="text-slate-500 text-sm ml-0.5">.ai</span>
             </h1>
           </div>
           
@@ -204,8 +204,8 @@ const App: React.FC = () => {
                   onClick={handleEdit}
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-sm text-xs font-bold transition-all uppercase tracking-wider
                      ${!isInputCollapsed 
-                        ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30' 
-                        : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
+                        ? 'bg-sky-500/10 text-sky-400 border border-sky-500/30' 
+                        : 'text-slate-400 hover:text-white hover:bg-white/5 border border-transparent'
                      }`}
                 >
                   <SlidersHorizontal size={14} />
@@ -216,7 +216,7 @@ const App: React.FC = () => {
              {state.history.length > 0 && (
                 <button 
                   onClick={() => setState(prev => ({ ...prev, isHistoryOpen: true }))}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-sm text-xs font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-colors uppercase tracking-wider"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-sm text-xs font-bold text-slate-400 hover:text-white hover:bg-white/5 transition-colors uppercase tracking-wider"
                 >
                   <Clock size={16} />
                   History
@@ -226,7 +226,7 @@ const App: React.FC = () => {
              {state.data && (
                 <button 
                   onClick={handleShare}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-sm text-xs font-bold text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/10 transition-colors uppercase tracking-wider border border-cyan-500/30"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-sm text-xs font-bold text-sky-400 hover:text-sky-300 hover:bg-sky-500/10 transition-colors uppercase tracking-wider border border-sky-500/30"
                 >
                   {isCopied ? <Check size={14} /> : <Share2 size={14} />}
                   {isCopied ? 'Copied URL' : 'Share Report'}
@@ -234,7 +234,7 @@ const App: React.FC = () => {
              )}
 
              {state.status !== 'idle' && (
-                <button onClick={resetAnalysis} className="flex items-center gap-2 px-3 py-1.5 rounded-sm text-xs font-bold bg-white text-black hover:bg-gray-200 transition-colors uppercase tracking-wider">
+                <button onClick={resetAnalysis} className="flex items-center gap-2 px-3 py-1.5 rounded-sm text-xs font-bold bg-white text-slate-950 hover:bg-slate-200 transition-colors uppercase tracking-wider">
                     <RotateCcw size={14}/> 
                     New Audit
                 </button>
@@ -249,7 +249,7 @@ const App: React.FC = () => {
         {/* Left Panel (Input Sidebar) */}
         <div className={`
             relative z-30 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]
-            bg-[#050505] border-r border-white/5 flex flex-col
+            bg-slate-950 border-r border-white/5 flex flex-col
             ${showSidebar 
                 ? (isInputCollapsed ? 'w-full md:w-[60px]' : 'w-full md:w-[700px]') 
                 : 'w-full'

@@ -27,10 +27,10 @@ const ReportCard: React.FC<ReportCardProps> = ({ data, onOpenPaths, onEdit }) =>
       
       {/* Header Section with Edit Button (Mobile Only) */}
       <div className="flex justify-between items-center md:hidden">
-          <h2 className="text-xl font-bold text-white">Audit Results</h2>
+          <h2 className="text-xl font-display font-bold text-white">Audit Results</h2>
           <button 
             onClick={onEdit}
-            className="flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors"
+            className="flex items-center gap-2 text-sm text-sky-400 hover:text-sky-300 transition-colors"
           >
             <RefreshCw size={14} />
             Edit & Re-run
@@ -41,36 +41,36 @@ const ReportCard: React.FC<ReportCardProps> = ({ data, onOpenPaths, onEdit }) =>
         {/* Score Card - Interactive Gauge */}
         <div 
             onClick={onEdit}
-            className="glass-panel p-8 rounded-none md:col-span-1 flex flex-col items-center justify-center relative overflow-hidden cursor-pointer hover:bg-white/5 transition-all duration-300 group border-l-4 border-l-cyan-500"
+            className="glass-panel p-8 rounded-none md:col-span-1 flex flex-col items-center justify-center relative overflow-hidden cursor-pointer hover:bg-white/5 transition-all duration-300 group border-l-4 border-l-sky-500"
         >
           <RadialScore score={data.reality_score} />
           <div className={`mt-6 px-4 py-1.5 rounded-full text-sm font-bold border uppercase tracking-widest ${getTagColor(data.reality_tag)}`}>
             {data.reality_tag}
           </div>
-          <div className="mt-4 text-[10px] text-gray-500 uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="mt-4 text-[10px] text-slate-500 uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity">
             Click to Edit Parameters
           </div>
         </div>
 
         {/* Diagnosis Card */}
-        <div className="glass-panel p-8 rounded-none md:col-span-2 flex flex-col justify-center border-l-4 border-l-purple-500 relative overflow-hidden">
+        <div className="glass-panel p-8 rounded-none md:col-span-2 flex flex-col justify-center border-l-4 border-l-indigo-500 relative overflow-hidden">
             <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
                 <Activity size={120} />
             </div>
-            <div className="flex items-center gap-3 mb-6 text-purple-400 relative z-10">
+            <div className="flex items-center gap-3 mb-6 text-indigo-400 relative z-10">
               <Activity size={20} />
               <h3 className="text-sm font-bold uppercase tracking-[0.2em]">Failure Diagnosis</h3>
             </div>
-            <p className="text-2xl md:text-3xl text-white font-medium leading-tight mb-8 font-sans relative z-10">
+            <p className="text-2xl md:text-3xl text-white font-display font-medium leading-tight mb-8 relative z-10">
               "{data.failure_diagnosis.root_cause_summary}"
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
                 {data.failure_diagnosis.primary_reasons.map((reason, idx) => (
-                <div key={idx} className="flex items-start gap-4 p-4 bg-black/30 border border-white/5 rounded-lg hover:bg-black/50 transition-colors">
-                    <div className="flex items-center justify-center w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 font-mono text-xs font-bold shrink-0 border border-purple-500/30">
+                <div key={idx} className="flex items-start gap-4 p-4 bg-slate-950/40 border border-white/5 rounded-lg hover:bg-slate-950/60 transition-colors">
+                    <div className="flex items-center justify-center w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 font-mono text-xs font-bold shrink-0 border border-indigo-500/30">
                         {idx + 1}
                     </div>
-                    <span className="text-sm text-gray-300 leading-relaxed">{reason}</span>
+                    <span className="text-sm text-slate-300 leading-relaxed">{reason}</span>
                 </div>
                 ))}
             </div>
@@ -81,18 +81,18 @@ const ReportCard: React.FC<ReportCardProps> = ({ data, onOpenPaths, onEdit }) =>
       <div className="flex flex-col md:flex-row gap-8">
         <button 
           onClick={onOpenPaths}
-          className="flex-1 bg-blue-600/10 hover:bg-blue-600/20 border border-blue-500/30 text-blue-100 p-8 rounded-none flex items-center justify-between transition-all group"
+          className="flex-1 bg-sky-600/10 hover:bg-sky-600/20 border border-sky-500/30 text-sky-100 p-8 rounded-none flex items-center justify-between transition-all group"
         >
           <div className="flex items-center gap-6">
-            <div className="p-4 bg-blue-500/20 rounded-full group-hover:bg-blue-500/30 transition-colors">
-              <Brain size={32} className="text-blue-400" />
+            <div className="p-4 bg-sky-500/20 rounded-full group-hover:bg-sky-500/30 transition-colors">
+              <Brain size={32} className="text-sky-400" />
             </div>
             <div className="text-left">
-              <div className="text-base font-bold uppercase tracking-wider text-blue-400 mb-1">Recommended Action</div>
-              <div className="text-lg text-blue-200 opacity-90">View {data.alternative_paths.length} Alternative Paths</div>
+              <div className="text-base font-bold uppercase tracking-wider text-sky-400 mb-1">Recommended Action</div>
+              <div className="text-lg text-sky-200 opacity-90">View {data.alternative_paths.length} Alternative Paths</div>
             </div>
           </div>
-          <span className="text-3xl group-hover:translate-x-2 transition-transform text-blue-500">→</span>
+          <span className="text-3xl group-hover:translate-x-2 transition-transform text-sky-500">→</span>
         </button>
 
          <div className="flex-1 glass-panel p-8 rounded-none border-l-4 border-l-red-500 flex items-center gap-6">
@@ -101,7 +101,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ data, onOpenPaths, onEdit }) =>
             </div>
             <div>
                  <div className="text-xs font-bold uppercase tracking-wider text-red-400 mb-2">Stop Signal</div>
-                 <p className="text-lg text-gray-200 leading-snug font-medium">{data.stop_signal}</p>
+                 <p className="text-lg text-slate-200 leading-snug font-display font-medium">{data.stop_signal}</p>
             </div>
          </div>
       </div>
@@ -127,8 +127,8 @@ const ReportCard: React.FC<ReportCardProps> = ({ data, onOpenPaths, onEdit }) =>
           )}
 
           {/* Risk Profile Radar */}
-          <div className="glass-panel p-8 rounded-none border-l-4 border-l-cyan-500 md:col-span-1 flex flex-col justify-center">
-              <div className="flex items-center gap-3 mb-6 text-cyan-400">
+          <div className="glass-panel p-8 rounded-none border-l-4 border-l-sky-500 md:col-span-1 flex flex-col justify-center">
+              <div className="flex items-center gap-3 mb-6 text-sky-400">
                   <PieChart size={20} />
                   <h3 className="text-sm font-bold uppercase tracking-[0.2em]">Risk Profile</h3>
               </div>
@@ -142,7 +142,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ data, onOpenPaths, onEdit }) =>
         {/* Overengineering Risk */}
         <div className="glass-panel p-8 rounded-none">
           <div className="flex items-center justify-between mb-6">
-             <div className="flex items-center gap-2 text-purple-400">
+             <div className="flex items-center gap-2 text-indigo-400">
                 <ShieldAlert size={20} />
                 <h3 className="text-sm font-bold uppercase tracking-[0.2em]">Overengineering Risk</h3>
              </div>
@@ -156,14 +156,14 @@ const ReportCard: React.FC<ReportCardProps> = ({ data, onOpenPaths, onEdit }) =>
 
           {/* Risk Level Bar */}
           <div className="mb-8">
-            <div className="h-2 w-full bg-gray-800 rounded-full overflow-hidden flex">
+            <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden flex">
                <div className={`h-full transition-all duration-1000 ${
                   data.overengineering_risk.risk_level === 'low' ? 'w-1/3 bg-green-500' :
                   data.overengineering_risk.risk_level === 'medium' ? 'w-2/3 bg-yellow-500' :
                   'w-full bg-red-500'
                }`}></div>
             </div>
-            <div className="flex justify-between mt-2 text-[10px] text-gray-500 uppercase tracking-widest font-bold">
+            <div className="flex justify-between mt-2 text-[10px] text-slate-500 uppercase tracking-widest font-bold">
                <span className={data.overengineering_risk.risk_level === 'low' ? 'text-green-500' : ''}>Low</span>
                <span className={data.overengineering_risk.risk_level === 'medium' ? 'text-yellow-500' : ''}>Medium</span>
                <span className={data.overengineering_risk.risk_level === 'high' ? 'text-red-500' : ''}>High</span>
@@ -171,17 +171,17 @@ const ReportCard: React.FC<ReportCardProps> = ({ data, onOpenPaths, onEdit }) =>
           </div>
           
           <div className="mb-6">
-             <span className="text-xs text-gray-500 uppercase tracking-wider font-bold">Warning Signs</span>
+             <span className="text-xs text-slate-500 uppercase tracking-wider font-bold">Warning Signs</span>
              <ul className="mt-4 space-y-2">
                 {data.overengineering_risk.warning_signs.map((sign, i) => (
-                    <li key={i} className="text-base text-gray-300 pl-4 border-l-2 border-gray-700">{sign}</li>
+                    <li key={i} className="text-base text-slate-300 pl-4 border-l-2 border-slate-700">{sign}</li>
                 ))}
              </ul>
           </div>
 
-          <div className="bg-purple-500/10 p-5 rounded-none border border-purple-500/20">
-             <span className="text-xs text-purple-400 font-bold uppercase block mb-2 tracking-wider">Simplification Advice</span>
-             <p className="text-base text-gray-300 italic">"{data.overengineering_risk.simplification_advice}"</p>
+          <div className="bg-indigo-500/10 p-5 rounded-none border border-indigo-500/20">
+             <span className="text-xs text-indigo-400 font-bold uppercase block mb-2 tracking-wider">Simplification Advice</span>
+             <p className="text-base text-slate-300 italic">"{data.overengineering_risk.simplification_advice}"</p>
           </div>
         </div>
 
@@ -194,17 +194,17 @@ const ReportCard: React.FC<ReportCardProps> = ({ data, onOpenPaths, onEdit }) =>
 
              <div className="space-y-8 relative before:absolute before:inset-0 before:ml-2 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent">
                  <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                     <div className="flex items-center justify-center w-5 h-5 rounded-full border-2 border-orange-500 bg-black shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_10px_rgba(249,115,22,0.5)] z-10">
+                     <div className="flex items-center justify-center w-5 h-5 rounded-full border-2 border-orange-500 bg-slate-950 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_10px_rgba(249,115,22,0.5)] z-10">
                          <div className="w-1.5 h-1.5 bg-orange-500 rounded-full"></div>
                      </div>
-                     <div className="w-[calc(100%-2rem)] md:w-[calc(50%-1.5rem)] bg-black/40 p-5 border border-white/5 rounded-none">
+                     <div className="w-[calc(100%-2rem)] md:w-[calc(50%-1.5rem)] bg-slate-950/40 p-5 border border-white/5 rounded-none">
                          <div className="flex items-center gap-2 mb-3">
                              <Clock size={14} className="text-orange-400" />
                              <h4 className="text-xs text-orange-400 uppercase tracking-wider font-bold">Short Term (1-3 months)</h4>
                          </div>
                          <ul className="space-y-2">
                              {data.likely_consequences.short_term.map((c, i) => (
-                                 <li key={i} className="text-sm text-gray-300 flex items-start gap-2">
+                                 <li key={i} className="text-sm text-slate-300 flex items-start gap-2">
                                      <span className="text-orange-500 mt-1 shrink-0">›</span>
                                      {c}
                                  </li>
@@ -214,18 +214,18 @@ const ReportCard: React.FC<ReportCardProps> = ({ data, onOpenPaths, onEdit }) =>
                  </div>
                  
                  <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                     <div className="flex items-center justify-center w-5 h-5 rounded-full border-2 border-gray-500 bg-black shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-                         <div className="w-1.5 h-1.5 bg-gray-500 rounded-full"></div>
+                     <div className="flex items-center justify-center w-5 h-5 rounded-full border-2 border-slate-500 bg-slate-950 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                         <div className="w-1.5 h-1.5 bg-slate-500 rounded-full"></div>
                      </div>
-                     <div className="w-[calc(100%-2rem)] md:w-[calc(50%-1.5rem)] bg-black/40 p-5 border border-white/5 rounded-none">
+                     <div className="w-[calc(100%-2rem)] md:w-[calc(50%-1.5rem)] bg-slate-950/40 p-5 border border-white/5 rounded-none">
                          <div className="flex items-center gap-2 mb-3">
-                             <TrendingUp size={14} className="text-gray-400" />
-                             <h4 className="text-xs text-gray-400 uppercase tracking-wider font-bold">Long Term (6+ months)</h4>
+                             <TrendingUp size={14} className="text-slate-400" />
+                             <h4 className="text-xs text-slate-400 uppercase tracking-wider font-bold">Long Term (6+ months)</h4>
                          </div>
                          <ul className="space-y-2">
                              {data.likely_consequences.long_term.map((c, i) => (
-                                 <li key={i} className="text-sm text-gray-300 flex items-start gap-2">
-                                     <span className="text-gray-500 mt-1 shrink-0">›</span>
+                                 <li key={i} className="text-sm text-slate-300 flex items-start gap-2">
+                                     <span className="text-slate-500 mt-1 shrink-0">›</span>
                                      {c}
                                  </li>
                              ))}
