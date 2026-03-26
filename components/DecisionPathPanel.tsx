@@ -1,6 +1,7 @@
 import React from 'react';
 import { AlternativePath } from '../types';
-import { ArrowRight, GitBranch, AlertTriangle, PlayCircle } from 'lucide-react';
+import { ArrowRight, GitBranch, AlertTriangle, PlayCircle, X, Zap } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 interface DecisionPathPanelProps {
   paths: AlternativePath[];
@@ -11,70 +12,98 @@ interface DecisionPathPanelProps {
 
 const DecisionPathPanel: React.FC<DecisionPathPanelProps> = ({ paths, isOpen, onClose, onSimulatePath }) => {
   return (
-    <div
-      className={`fixed inset-y-0 right-0 w-full md:w-[480px] bg-slate-950 border-l border-glass-border transform transition-transform duration-300 ease-in-out z-50 ${
-        isOpen ? 'translate-x-0' : 'translate-x-full'
-      } shadow-2xl overflow-y-auto`}
+    <motion.div
+      initial={{ x: '100%' }}
+      animate={{ x: 0 }}
+      exit={{ x: '100%' }}
+      transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+      className="fixed inset-y-0 right-0 w-full md:w-[520px] bg-slate-950/95 backdrop-blur-xl border-l border-white/10 z-50 shadow-2xl flex flex-col"
     >
-      <div className="p-6">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-2 text-sky-400">
-            <GitBranch size={20} />
-            <h2 className="text-lg font-display font-bold tracking-wider uppercase">Decision Path Analysis</h2>
+      {/* Header */}
+      <div className="p-8 border-b border-white/5 bg-slate-900/50 flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-4">
+          <div className="p-2.5 bg-sky-500/10 rounded-xl border border-sky-500/20">
+            <GitBranch size={22} className="text-sky-400" />
           </div>
-          <button
-            onClick={onClose}
-            className="text-slate-400 hover:text-white p-2 rounded-full hover:bg-white/5 transition-colors"
-          >
-            <ArrowRight size={20} />
-          </button>
+          <div>
+            <h2 className="text-xl font-display font-bold text-white tracking-tight">Neural Path Analysis</h2>
+            <p className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-[0.3em]">Alternate Realities Detected</p>
+          </div>
         </div>
+        <button
+          onClick={onClose}
+          className="p-2.5 hover:bg-white/5 rounded-xl text-slate-500 hover:text-white transition-all border border-transparent hover:border-white/10"
+        >
+          <X size={22} />
+        </button>
+      </div>
 
-        <div className="space-y-6">
-          {paths.map((path, index) => (
-            <div key={index} className="glass-panel rounded-xl p-6 border-l-4 border-l-sky-500 relative group hover:bg-white/5 transition-colors">
-              <div className="flex items-center gap-3 mb-4">
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-sky-500/20 text-sky-400">
-                      <GitBranch size={16} />
-                  </div>
-                  <h3 className="text-xl font-display font-bold text-white">{path.path_name}</h3>
-              </div>
-              <p className="text-slate-300 text-sm mb-6 leading-relaxed bg-slate-950/40 p-4 rounded-lg border border-white/5">{path.description}</p>
-              
-              <div className="mb-6">
-                <h4 className="text-xs font-bold text-green-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-400"></span>
-                    Why Feasible
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto p-8 space-y-8 scrollbar-hide">
+        {paths.map((path, index) => (
+          <motion.div 
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className="glass-panel rounded-2xl p-8 border border-white/10 relative group hover:border-sky-500/30 transition-all duration-500"
+          >
+            <div className="absolute top-0 left-0 w-1 h-full bg-sky-500/30 group-hover:bg-sky-500 transition-colors"></div>
+            
+            <div className="flex items-center gap-4 mb-6">
+                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-sky-500/10 text-sky-400 border border-sky-500/20 group-hover:bg-sky-500/20 transition-colors">
+                    <Zap size={18} />
+                </div>
+                <h3 className="text-2xl font-display font-bold text-white tracking-tight">{path.path_name}</h3>
+            </div>
+
+            <p className="text-slate-400 text-sm mb-8 leading-relaxed bg-slate-950/50 p-5 rounded-xl border border-white/5 font-sans italic">
+              "{path.description}"
+            </p>
+            
+            <div className="space-y-6">
+              <div>
+                <h4 className="text-[10px] font-mono font-bold text-green-400 uppercase tracking-[0.4em] mb-4 flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div>
+                    Feasibility Logic
                 </h4>
-                <p className="text-sm text-slate-400 pl-3 border-l border-green-500/30">{path.why_it_passes_feasibility}</p>
+                <p className="text-sm text-slate-300 pl-5 border-l border-green-500/20 leading-relaxed">{path.why_it_passes_feasibility}</p>
               </div>
 
-              <div className="mb-8">
-                <h4 className="text-xs font-bold text-orange-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-                   <AlertTriangle size={14}/> Trade-offs
+              <div>
+                <h4 className="text-[10px] font-mono font-bold text-orange-400 uppercase tracking-[0.4em] mb-4 flex items-center gap-2">
+                   <AlertTriangle size={14} className="text-orange-500"/> System Trade-offs
                 </h4>
-                <ul className="space-y-3 pl-3 border-l border-orange-500/30">
+                <ul className="space-y-3 pl-5 border-l border-orange-500/20">
                   {path.key_tradeoffs.map((tradeoff, i) => (
-                    <li key={i} className="text-sm text-slate-400 flex items-start gap-2">
-                      <span className="text-orange-500 mt-0.5 shrink-0">›</span>
-                      {tradeoff}
+                    <li key={i} className="text-sm text-slate-400 flex items-start gap-3 group/item">
+                      <span className="text-orange-500/50 mt-1 shrink-0 font-mono group-hover/item:text-orange-500 transition-colors">»</span>
+                      <span className="group-hover/item:text-slate-200 transition-colors">{tradeoff}</span>
                     </li>
                   ))}
                 </ul>
               </div>
-
-              <button 
-                onClick={() => onSimulatePath(path)}
-                className="w-full py-3 bg-sky-600/20 hover:bg-sky-600/40 border border-sky-500/50 text-sky-300 rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
-              >
-                <PlayCircle size={18} />
-                Analyze This Path
-              </button>
             </div>
-          ))}
-        </div>
+
+            <motion.button 
+              whileHover={{ scale: 1.02, backgroundColor: 'rgba(56, 189, 248, 0.15)' }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => onSimulatePath(path)}
+              className="w-full mt-10 py-4 bg-sky-600/10 text-sky-400 hover:text-white border border-sky-500/30 rounded-xl text-xs font-mono font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-3 transition-all shadow-lg shadow-sky-500/5 group/btn overflow-hidden relative"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/btn:animate-shimmer"></div>
+              <Zap size={18} className="group-hover/btn:scale-125 transition-transform text-yellow-400" />
+              <span>Execute Neural Simulation</span>
+            </motion.button>
+          </motion.div>
+        ))}
       </div>
-    </div>
+
+      {/* Footer Info */}
+      <div className="p-6 bg-slate-900/80 border-t border-white/5 text-center">
+        <p className="text-[9px] font-mono text-slate-600 uppercase tracking-[0.5em]">Neural Simulation Engine v4.2.0</p>
+      </div>
+    </motion.div>
   );
 };
 

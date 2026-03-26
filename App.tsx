@@ -5,8 +5,9 @@ import ReportCard from './components/ReportCard';
 import DecisionPathPanel from './components/DecisionPathPanel';
 import InputSection from './components/InputSection';
 import Logo from './components/Logo';
-import { Loader2, AlertOctagon, RotateCcw, Clock, X, ChevronRight, SlidersHorizontal, Share2, Check } from 'lucide-react';
+import { Loader2, AlertOctagon, RotateCcw, Clock, X, ChevronRight, SlidersHorizontal, Share2, Check, ShieldCheck } from 'lucide-react';
 import LZString from 'lz-string';
+import { motion, AnimatePresence } from 'motion/react';
 
 const App: React.FC = () => {
   const [state, setState] = useState<AppState>({
@@ -74,7 +75,6 @@ const App: React.FC = () => {
         history: [newHistoryItem, ...prev.history]
       }));
       
-      // Collapse input sidebar on success for "slide back" effect
       setIsInputCollapsed(true);
       
     } catch (err: any) {
@@ -101,7 +101,7 @@ const App: React.FC = () => {
     }));
     
     setIsPathPanelOpen(false);
-    setIsInputCollapsed(false); // Re-open input for context
+    setIsInputCollapsed(false);
     performAnalysis(newInput, state.context);
   };
 
@@ -134,7 +134,7 @@ const App: React.FC = () => {
     }));
     setIsParametersVisible(true); 
     setIsPathPanelOpen(false);
-    setIsInputCollapsed(true); // Keep result focused
+    setIsInputCollapsed(true);
   };
 
   const handleEdit = () => {
@@ -143,11 +143,9 @@ const App: React.FC = () => {
         setIsParametersVisible(true);
         setIsSidebarGlowing(true);
         setTimeout(() => setIsSidebarGlowing(false), 1500);
-        // Scroll to input on mobile
         if (window.innerWidth < 768) {
            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-        // Focus input on desktop
         setTimeout(() => {
             inputRef.current?.focus();
         }, 300);
@@ -182,80 +180,97 @@ const App: React.FC = () => {
   const showSidebar = state.status !== 'idle';
 
   return (
-    <div className="min-h-screen text-slate-100 font-sans selection:bg-sky-500/30 flex flex-col overflow-hidden">
+    <div className="min-h-screen text-slate-100 font-sans selection:bg-sky-500/30 flex flex-col overflow-hidden relative">
       
+      {/* Background Decorative Elements */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-sky-500/10 rounded-full blur-[120px] animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }}></div>
+      </div>
+
       {/* Navigation / Header */}
-      <nav className="fixed top-0 w-full z-40 border-b border-white/5 bg-slate-950/90 backdrop-blur-md h-16">
+      <motion.nav 
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        className="fixed top-0 w-full z-50 border-b border-white/5 bg-slate-950/80 backdrop-blur-xl h-16"
+      >
         <div className="w-full px-6 h-full flex items-center justify-between">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={resetAnalysis}>
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center shadow-[0_0_20px_rgba(56,189,248,0.4)] border border-white/20">
-                <Logo size={20} className="text-white" />
+          <div className="flex items-center gap-3 cursor-pointer group" onClick={resetAnalysis}>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center shadow-[0_0_20px_rgba(56,189,248,0.4)] border border-white/20 group-hover:scale-110 transition-transform">
+                <Logo size={22} className="text-white" />
             </div>
             <h1 className="font-display font-bold text-xl tracking-tight hidden md:flex items-center gap-1">
               Reality<span className="text-sky-400">Check</span><span className="text-slate-500 text-sm ml-0.5">.ai</span>
             </h1>
           </div>
           
-          <div className="flex items-center gap-3">
-             
-             {/* Parameters Toggle (Moved here) */}
-             {state.status !== 'idle' && (
-                <button 
-                  onClick={handleEdit}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-sm text-xs font-bold transition-all uppercase tracking-wider
-                     ${!isInputCollapsed 
-                        ? 'bg-sky-500/10 text-sky-400 border border-sky-500/30' 
-                        : 'text-slate-400 hover:text-white hover:bg-white/5 border border-transparent'
-                     }`}
-                >
-                  <SlidersHorizontal size={14} />
-                  Parameters
-                </button>
-             )}
+          <div className="flex items-center gap-2">
+             <AnimatePresence>
+               {state.status !== 'idle' && (
+                  <motion.div 
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    className="flex items-center gap-2"
+                  >
+                    <button 
+                      onClick={handleEdit}
+                      className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all uppercase tracking-wider
+                         ${!isInputCollapsed 
+                            ? 'bg-sky-500/20 text-sky-400 border border-sky-500/30' 
+                            : 'text-slate-400 hover:text-white hover:bg-white/5 border border-transparent'
+                         }`}
+                    >
+                      <SlidersHorizontal size={14} />
+                      <span className="hidden sm:inline">Parameters</span>
+                    </button>
 
-             {state.history.length > 0 && (
-                <button 
-                  onClick={() => setState(prev => ({ ...prev, isHistoryOpen: true }))}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-sm text-xs font-bold text-slate-400 hover:text-white hover:bg-white/5 transition-colors uppercase tracking-wider"
-                >
-                  <Clock size={16} />
-                  History
-                </button>
-             )}
+                    {state.history.length > 0 && (
+                      <button 
+                        onClick={() => setState(prev => ({ ...prev, isHistoryOpen: true }))}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white hover:bg-white/5 transition-colors uppercase tracking-wider"
+                      >
+                        <Clock size={16} />
+                        <span className="hidden sm:inline">History</span>
+                      </button>
+                    )}
 
-             {state.data && (
-                <button 
-                  onClick={handleShare}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-sm text-xs font-bold text-sky-400 hover:text-sky-300 hover:bg-sky-500/10 transition-colors uppercase tracking-wider border border-sky-500/30"
-                >
-                  {isCopied ? <Check size={14} /> : <Share2 size={14} />}
-                  {isCopied ? 'Copied URL' : 'Share Report'}
-                </button>
-             )}
+                    {state.data && (
+                      <button 
+                        onClick={handleShare}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold text-sky-400 hover:text-sky-300 hover:bg-sky-500/10 transition-colors uppercase tracking-wider border border-sky-500/30"
+                      >
+                        {isCopied ? <Check size={14} /> : <Share2 size={14} />}
+                        <span className="hidden sm:inline">{isCopied ? 'Copied' : 'Share'}</span>
+                      </button>
+                    )}
 
-             {state.status !== 'idle' && (
-                <button onClick={resetAnalysis} className="flex items-center gap-2 px-3 py-1.5 rounded-sm text-xs font-bold bg-white text-slate-950 hover:bg-slate-200 transition-colors uppercase tracking-wider">
-                    <RotateCcw size={14}/> 
-                    New Audit
-                </button>
-             )}
+                    <button onClick={resetAnalysis} className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-950 hover:bg-slate-200 transition-colors uppercase tracking-wider shadow-lg shadow-white/10">
+                        <RotateCcw size={14}/> 
+                        <span className="hidden sm:inline">New Audit</span>
+                    </button>
+                  </motion.div>
+               )}
+             </AnimatePresence>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
-      {/* Main Layout - Flex Container */}
-      <div className="flex-1 flex flex-col md:flex-row pt-16 h-screen overflow-hidden">
+      {/* Main Layout */}
+      <div className="flex-1 flex flex-col md:flex-row pt-16 h-screen overflow-hidden relative z-10">
         
         {/* Left Panel (Input Sidebar) */}
-        <div className={`
+        <motion.div 
+          layout
+          className={`
             relative z-30 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]
-            bg-slate-950 border-r border-white/5 flex flex-col
+            bg-slate-950/50 backdrop-blur-md border-r border-white/5 flex flex-col
             ${showSidebar 
-                ? (isInputCollapsed ? 'w-full md:w-[60px]' : 'w-full md:w-[700px]') 
+                ? (isInputCollapsed ? 'w-full md:w-[80px]' : 'w-full md:w-[700px]') 
                 : 'w-full'
             }
             ${showSidebar ? 'h-[60px] md:h-full' : 'h-full'}
-            ${isInputCollapsed ? 'overflow-hidden' : 'overflow-hidden'}
+            overflow-hidden
         `}>
              <InputSection 
                 inputRef={inputRef}
@@ -272,102 +287,150 @@ const App: React.FC = () => {
                 isCollapsed={isInputCollapsed}
                 onToggleCollapse={() => setIsInputCollapsed(!isInputCollapsed)}
              />
-        </div>
+        </motion.div>
 
         {/* Right Panel (Results) */}
-        {showSidebar && (
-            <div className={`flex-1 overflow-y-auto bg-black/20 relative transition-all duration-500`}>
-                <div className={`mx-auto p-4 md:p-12 pb-32 transition-all duration-500 ${isInputCollapsed ? 'max-w-[1600px]' : 'max-w-5xl'}`}>
-                    
-                    {state.status === 'analyzing' && !state.data && (
-                        <div className="flex flex-col items-center justify-center h-[60vh] animate-fade-in">
-                            <Loader2 size={48} className="text-cyan-500 animate-spin mb-6" />
-                            <h3 className="text-xl font-bold text-white mb-2 font-mono uppercase tracking-widest">Analyzing Constraints</h3>
-                            <p className="text-gray-400 animate-pulse text-sm">Checking feasibility against known benchmarks...</p>
-                        </div>
-                    )}
+        <AnimatePresence mode="wait">
+          {showSidebar && (
+              <motion.div 
+                key="results"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                className={`flex-1 overflow-y-auto bg-black/40 relative transition-all duration-500 scrollbar-hide`}
+              >
+                  <div className={`mx-auto p-4 md:p-12 pb-32 transition-all duration-500 ${isInputCollapsed ? 'max-w-[1600px]' : 'max-w-5xl'}`}>
+                      
+                      {state.status === 'analyzing' && !state.data && (
+                          <div className="flex flex-col items-center justify-center h-[70vh]">
+                              <div className="relative">
+                                <Loader2 size={64} className="text-sky-500 animate-spin mb-8" />
+                                <div className="absolute inset-0 blur-xl bg-sky-500/20 animate-pulse"></div>
+                              </div>
+                              <h3 className="text-2xl font-display font-bold text-white mb-2 tracking-widest uppercase">Initializing Audit</h3>
+                              <p className="text-slate-400 animate-pulse text-sm font-mono">Synthesizing constraints and market benchmarks...</p>
+                              
+                              <div className="mt-12 w-64 h-1 bg-white/5 rounded-full overflow-hidden">
+                                <motion.div 
+                                  initial={{ x: '-100%' }}
+                                  animate={{ x: '100%' }}
+                                  transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+                                  className="w-full h-full bg-gradient-to-r from-transparent via-sky-500 to-transparent"
+                                />
+                              </div>
+                          </div>
+                      )}
 
-                    {state.status === 'error' && (
-                        <div className="border border-red-500/30 bg-red-500/5 p-8 rounded-none flex flex-col items-center text-center mt-20">
-                            <AlertOctagon size={48} className="text-red-500 mb-4" />
-                            <h3 className="text-xl font-bold text-white mb-2 font-mono uppercase">Analysis Failed</h3>
-                            <p className="text-red-300 mb-6 font-mono text-sm">{state.error}</p>
-                            <button 
-                                onClick={() => setState(prev => ({...prev, status: 'idle', error: null}))}
-                                className="px-6 py-2 border border-white/20 hover:bg-white/10 rounded-none transition-colors uppercase text-sm font-bold"
-                            >
-                                Reset System
-                            </button>
-                        </div>
-                    )}
+                      {state.status === 'error' && (
+                          <motion.div 
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            className="glass-panel p-12 rounded-2xl flex flex-col items-center text-center mt-20 border-red-500/20"
+                          >
+                              <div className="w-20 h-20 rounded-full bg-red-500/10 flex items-center justify-center mb-6 border border-red-500/20">
+                                <AlertOctagon size={40} className="text-red-500" />
+                              </div>
+                              <h3 className="text-2xl font-display font-bold text-white mb-4 uppercase tracking-wider">System Breach</h3>
+                              <p className="text-red-300 mb-8 font-mono text-sm max-w-md">{state.error}</p>
+                              <button 
+                                  onClick={() => setState(prev => ({...prev, status: 'idle', error: null}))}
+                                  className="px-8 py-3 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 rounded-xl transition-all uppercase text-xs font-bold tracking-widest"
+                              >
+                                  Reboot Analysis
+                              </button>
+                          </motion.div>
+                      )}
 
-                    {state.data && (
-                         <div className={state.status === 'analyzing' ? 'opacity-50 pointer-events-none filter blur-sm transition-all' : 'animate-fade-in'}>
-                            <ReportCard 
-                                data={state.data} 
-                                onOpenPaths={() => setIsPathPanelOpen(true)}
-                                onEdit={handleEdit}
-                            />
-                         </div>
-                    )}
-                </div>
-            </div>
-        )}
+                      {state.data && (
+                           <motion.div 
+                            layout
+                            className={state.status === 'analyzing' ? 'opacity-50 pointer-events-none filter blur-sm transition-all' : ''}
+                           >
+                              <ReportCard 
+                                  data={state.data} 
+                                  onOpenPaths={() => setIsPathPanelOpen(true)}
+                                  onEdit={handleEdit}
+                              />
+                           </motion.div>
+                      )}
+                  </div>
+              </motion.div>
+          )}
+        </AnimatePresence>
 
       </div>
 
-      {/* Decision Path Panel (Slide Over) */}
-      {state.data && (
+      {/* Decision Path Panel */}
+      <AnimatePresence>
+        {isPathPanelOpen && (
           <DecisionPathPanel 
             isOpen={isPathPanelOpen}
             onClose={() => setIsPathPanelOpen(false)}
-            paths={state.data.alternative_paths}
+            paths={state.data?.alternative_paths || []}
             onSimulatePath={handleSimulatePath}
           />
-      )}
+        )}
+      </AnimatePresence>
 
-      {/* History Modal Overlay */}
-      {state.isHistoryOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-            <div className="w-full max-w-md bg-[#0a0a0f] border border-glass-border rounded-lg shadow-2xl max-h-[80vh] flex flex-col">
-                <div className="flex items-center justify-between p-4 border-b border-white/5">
-                    <h3 className="font-bold text-lg flex items-center gap-2 font-mono">
-                        <Clock size={20} className="text-cyan-400"/>
-                        HISTORY
-                    </h3>
-                    <button 
-                        onClick={() => setState(prev => ({ ...prev, isHistoryOpen: false }))}
-                        className="p-2 hover:bg-white/10 rounded-full transition-colors"
-                    >
-                        <X size={20} />
-                    </button>
-                </div>
-                <div className="overflow-y-auto p-4 space-y-3">
-                    {state.history.map((item) => (
-                        <button 
-                            key={item.id}
-                            onClick={() => restoreHistory(item)}
-                            className="w-full text-left p-4 bg-white/5 hover:bg-white/10 border border-white/5 transition-all group rounded-sm"
-                        >
-                            <div className="flex items-center justify-between mb-2">
-                                <span className={`text-[10px] font-bold px-2 py-0.5 border uppercase tracking-wider
-                                    ${item.data.reality_score < 50 ? 'border-red-500/30 text-red-400 bg-red-500/10' : 
-                                      item.data.reality_score < 70 ? 'border-yellow-500/30 text-yellow-400 bg-yellow-500/10' : 
-                                      'border-green-500/30 text-green-400 bg-green-500/10'}`}>
-                                    Score: {item.data.reality_score}
-                                </span>
-                                <span className="text-xs text-gray-500 font-mono">{formatDate(item.timestamp)}</span>
-                            </div>
-                            <p className="text-sm text-gray-300 line-clamp-2 font-mono">{item.input}</p>
-                            <div className="mt-2 text-xs text-gray-500 flex items-center gap-1 group-hover:text-cyan-400 transition-colors font-mono">
-                                Restore <ChevronRight size={12} />
-                            </div>
-                        </button>
-                    ))}
-                </div>
-            </div>
-        </div>
-      )}
+      {/* History Modal */}
+      <AnimatePresence>
+        {state.isHistoryOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/90 backdrop-blur-md p-4"
+          >
+              <motion.div 
+                initial={{ scale: 0.9, y: 20 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.9, y: 20 }}
+                className="w-full max-w-lg glass-panel rounded-2xl shadow-2xl max-h-[85vh] flex flex-col"
+              >
+                  <div className="flex items-center justify-between p-6 border-b border-white/5">
+                      <h3 className="font-display font-bold text-xl flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-sky-500/20 flex items-center justify-center">
+                            <Clock size={18} className="text-sky-400"/>
+                          </div>
+                          Audit Archives
+                      </h3>
+                      <button 
+                          onClick={() => setState(prev => ({ ...prev, isHistoryOpen: false }))}
+                          className="p-2 hover:bg-white/10 rounded-full transition-colors"
+                      >
+                          <X size={20} />
+                      </button>
+                  </div>
+                  <div className="overflow-y-auto p-6 space-y-4 scrollbar-hide">
+                      {state.history.map((item) => (
+                          <button 
+                              key={item.id}
+                              onClick={() => restoreHistory(item)}
+                              className="w-full text-left p-5 bg-white/5 hover:bg-white/10 border border-white/5 transition-all group rounded-xl relative overflow-hidden"
+                          >
+                              <div className="flex items-center justify-between mb-3">
+                                  <div className="flex items-center gap-2">
+                                    <ShieldCheck size={14} className={item.data.reality_score > 70 ? 'text-green-400' : 'text-orange-400'} />
+                                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider
+                                        ${item.data.reality_score < 50 ? 'text-red-400 bg-red-500/10' : 
+                                          item.data.reality_score < 70 ? 'text-yellow-400 bg-yellow-500/10' : 
+                                          'text-green-400 bg-green-500/10'}`}>
+                                        Score: {item.data.reality_score}
+                                    </span>
+                                  </div>
+                                  <span className="text-xs text-slate-500 font-mono">{formatDate(item.timestamp)}</span>
+                              </div>
+                              <p className="text-sm text-slate-300 line-clamp-2 font-sans mb-3">{item.input}</p>
+                              <div className="text-[10px] text-slate-500 flex items-center gap-1 group-hover:text-sky-400 transition-colors font-bold uppercase tracking-widest">
+                                  Restore Session <ChevronRight size={12} />
+                              </div>
+                          </button>
+                      ))}
+                  </div>
+              </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   );
