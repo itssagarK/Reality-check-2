@@ -104,7 +104,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ data, onOpenPaths, onEdit }) =>
                 <motion.div 
                   key={idx} 
                   whileHover={{ x: 5 }}
-                  className="flex items-start gap-4 p-5 bg-white/60 border border-slate-200 rounded-xl hover:bg-white/80 transition-colors group/item"
+                  className="flex items-start gap-4 p-5 bg-white/40 backdrop-blur-md border border-white/60 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8)] rounded-xl hover:bg-white/60 transition-colors group/item"
                 >
                     <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-indigo-100 text-indigo-600 font-mono text-xs font-bold shrink-0 border border-indigo-200 group-hover/item:bg-indigo-200 transition-colors">
                         0{idx + 1}
@@ -173,7 +173,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ data, onOpenPaths, onEdit }) =>
                     <motion.div 
                       key={idx} 
                       whileHover={{ scale: 1.02 }}
-                      className="flex items-start gap-4 text-base text-slate-700 bg-white/60 p-5 border border-slate-200 rounded-xl hover:text-slate-900 transition-colors"
+                      className="flex items-start gap-4 text-base text-slate-700 bg-white/40 backdrop-blur-md p-5 border border-white/60 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8)] rounded-xl hover:bg-white/60 transition-colors"
                     >
                         <XCircle size={18} className="text-yellow-600 mt-0.5 shrink-0" />
                         <span className="leading-relaxed">{mistake}</span>
@@ -286,7 +286,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ data, onOpenPaths, onEdit }) =>
                      <div className="flex items-center justify-center w-6 h-6 rounded-full border border-orange-300 bg-white shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_15px_rgba(249,115,22,0.1)] z-10">
                          <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
                      </div>
-                     <div className="w-[calc(100%-2.5rem)] md:w-[calc(50%-2rem)] bg-white/60 p-6 border border-slate-200 rounded-2xl hover:bg-white/80 transition-all group-hover:border-orange-300">
+                     <div className="w-[calc(100%-2.5rem)] md:w-[calc(50%-2rem)] bg-white/40 backdrop-blur-md p-6 border border-white/60 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8)] rounded-2xl hover:bg-white/60 transition-all group-hover:border-orange-300">
                          <div className="flex items-center gap-3 mb-4">
                              <Clock size={16} className="text-orange-500" />
                              <h4 className="text-[10px] font-mono text-orange-600 uppercase tracking-[0.3em] font-bold text-center">T+ 90 Days</h4>
@@ -307,7 +307,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ data, onOpenPaths, onEdit }) =>
                      <div className="flex items-center justify-center w-6 h-6 rounded-full border border-slate-300 bg-white shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
                          <div className="w-2 h-2 bg-slate-400 rounded-full"></div>
                      </div>
-                     <div className="w-[calc(100%-2.5rem)] md:w-[calc(50%-2rem)] bg-white/60 p-6 border border-slate-200 rounded-2xl hover:bg-white/80 transition-all group-hover:border-slate-400">
+                     <div className="w-[calc(100%-2.5rem)] md:w-[calc(50%-2rem)] bg-white/40 backdrop-blur-md p-6 border border-white/60 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8)] rounded-2xl hover:bg-white/60 transition-all group-hover:border-slate-400">
                          <div className="flex items-center gap-3 mb-4">
                              <TrendingUp size={16} className="text-slate-500" />
                              <h4 className="text-[10px] font-mono text-slate-500 uppercase tracking-[0.3em] font-bold">T+ 180 Days</h4>

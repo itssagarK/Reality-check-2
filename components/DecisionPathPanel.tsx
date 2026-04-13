@@ -57,7 +57,7 @@ const DecisionPathPanel: React.FC<DecisionPathPanelProps> = ({ paths, isOpen, on
                 <h3 className="text-2xl font-display font-bold text-slate-900 tracking-tight">{path.path_name}</h3>
             </div>
 
-            <p className="text-slate-700 text-base mb-8 leading-relaxed bg-slate-50 p-5 rounded-xl border border-slate-200 font-sans italic">
+            <p className="text-slate-700 text-base mb-8 leading-relaxed bg-white/40 backdrop-blur-md p-5 rounded-xl border border-white/60 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8)] font-sans italic">
               "{path.description}"
             </p>
             

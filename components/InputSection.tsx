@@ -85,16 +85,16 @@ const InputSection: React.FC<InputSectionProps> = ({
         layout
         className={`
           flex flex-col flex-1 relative min-h-0
-          ${isSidebar ? 'h-full border-none' : 'max-w-4xl mx-auto w-full border border-slate-200 shadow-2xl mb-8 rounded-2xl overflow-hidden'}
+          ${isSidebar ? 'h-full border-none' : 'max-w-4xl mx-auto w-full glass-panel mb-8 rounded-2xl overflow-hidden'}
           ${isGlowing ? 'shadow-[0_0_50px_rgba(56,189,248,0.15)] border-sky-300' : ''}
-          bg-white/80 backdrop-blur-md transition-all duration-500
+          transition-all duration-500
       `}>
           
           {/* Scanline Effect for Input Area */}
           <div className="scan-line"></div>
 
           {/* Terminal Header */}
-          <div className="shrink-0 h-14 flex items-center justify-between px-6 border-b border-slate-200 bg-slate-100/80">
+          <div className="shrink-0 h-14 flex items-center justify-between px-6 border-b border-white/40 bg-white/30 backdrop-blur-md">
               <div className="flex items-center gap-4">
                   <div className="flex gap-1.5">
                     <div className="w-2.5 h-2.5 rounded-full bg-red-500 border border-red-600"></div>
@@ -117,7 +117,7 @@ const InputSection: React.FC<InputSectionProps> = ({
           </div>
 
           {/* Text Area Container */}
-          <div className="flex-1 relative bg-white/50 min-h-0 group"> 
+          <div className="flex-1 relative bg-white/20 min-h-0 group"> 
               <textarea
                   ref={inputRef as React.RefObject<HTMLTextAreaElement>}
                   value={input}
@@ -139,7 +139,7 @@ const InputSection: React.FC<InputSectionProps> = ({
           </div>
 
           {/* Constraints & Actions Footer */}
-          <div className="shrink-0 border-t border-slate-200 bg-white/90 z-20 backdrop-blur-md">
+          <div className="shrink-0 border-t border-white/40 bg-white/40 z-20 backdrop-blur-xl">
               <div className={`
                   grid grid-cols-1 ${isParametersVisible ? 'md:grid-cols-4' : 'md:grid-cols-1'} gap-4 p-6
               `}>
@@ -151,7 +151,7 @@ const InputSection: React.FC<InputSectionProps> = ({
                           initial={{ opacity: 0, scale: 0.95 }}
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.95 }}
-                          className="bg-slate-50 p-4 rounded-xl flex flex-col gap-1.5 transition-all border border-sky-200 hover:border-sky-400 group/input"
+                          className="bg-white/40 backdrop-blur-md p-4 rounded-xl flex flex-col gap-1.5 transition-all border border-white/60 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8)] hover:border-sky-300 group/input"
                         >
                             <label className="text-[10px] font-bold text-sky-600 uppercase flex items-center gap-2 mb-1 group-hover/input:text-sky-700 transition-colors">
                                   <DollarSign size={12}/> Budget
@@ -171,7 +171,7 @@ const InputSection: React.FC<InputSectionProps> = ({
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.95 }}
                           transition={{ delay: 0.05 }}
-                          className="bg-slate-50 p-4 rounded-xl flex flex-col gap-1.5 transition-all border border-indigo-200 hover:border-indigo-400 group/input"
+                          className="bg-white/40 backdrop-blur-md p-4 rounded-xl flex flex-col gap-1.5 transition-all border border-white/60 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8)] hover:border-indigo-300 group/input"
                         >
                             <label className="text-[10px] font-bold text-indigo-600 uppercase flex items-center gap-2 mb-1 group-hover/input:text-indigo-700 transition-colors">
                                   <Clock size={12}/> Time Allocation
@@ -194,7 +194,7 @@ const InputSection: React.FC<InputSectionProps> = ({
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.95 }}
                           transition={{ delay: 0.1 }}
-                          className="bg-slate-50 p-4 rounded-xl flex flex-col gap-1.5 transition-all border border-violet-200 hover:border-violet-400 group/input"
+                          className="bg-white/40 backdrop-blur-md p-4 rounded-xl flex flex-col gap-1.5 transition-all border border-white/60 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8)] hover:border-violet-300 group/input"
                         >
                             <label className="text-[10px] font-bold text-violet-600 uppercase flex items-center gap-2 mb-1 group-hover/input:text-violet-700 transition-colors">
                                   <Trophy size={12}/> Proficiency

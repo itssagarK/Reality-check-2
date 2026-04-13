@@ -183,9 +183,12 @@ const App: React.FC = () => {
     <div className="min-h-screen text-slate-900 font-sans selection:bg-sky-500/30 flex flex-col overflow-hidden relative">
       
       {/* Background Decorative Elements */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-sky-500/10 rounded-full blur-[120px] animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }}></div>
+      <div className="noise-bg"></div>
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-sky-300/30 rounded-full blur-[100px] animate-pulse" style={{ animationDuration: '8s' }}></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-300/30 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }}></div>
+        <div className="absolute top-[40%] left-[60%] w-[30%] h-[30%] bg-purple-300/20 rounded-full blur-[90px] animate-pulse" style={{ animationDuration: '12s', animationDelay: '1s' }}></div>
+        <div className="absolute bottom-[20%] left-[10%] w-[35%] h-[35%] bg-teal-200/30 rounded-full blur-[100px] animate-pulse" style={{ animationDuration: '9s', animationDelay: '3s' }}></div>
       </div>
 
       {/* Navigation / Header */}
@@ -385,7 +388,7 @@ const App: React.FC = () => {
                 initial={{ scale: 0.9, y: 20 }}
                 animate={{ scale: 1, y: 0 }}
                 exit={{ scale: 0.9, y: 20 }}
-                className="w-full max-w-lg glass-panel rounded-2xl shadow-2xl max-h-[85vh] flex flex-col bg-white"
+                className="w-full max-w-lg glass-panel rounded-2xl shadow-2xl max-h-[85vh] flex flex-col"
               >
                   <div className="flex items-center justify-between p-6 border-b border-slate-100">
                       <h3 className="font-display font-bold text-xl flex items-center gap-3 text-slate-900">
@@ -406,7 +409,7 @@ const App: React.FC = () => {
                           <button 
                               key={item.id}
                               onClick={() => restoreHistory(item)}
-                              className="w-full text-left p-5 bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all group rounded-xl relative overflow-hidden"
+                              className="w-full text-left p-5 bg-white/40 backdrop-blur-md border border-white/60 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8)] hover:bg-white/60 transition-all group rounded-xl relative overflow-hidden"
                           >
                               <div className="flex items-center justify-between mb-3">
                                   <div className="flex items-center gap-2">
