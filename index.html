@@ -7,22 +7,22 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: {
-              sans: ['Outfit', 'sans-serif'],
+              sans: ['Inter', 'sans-serif'],
               display: ['Space Grotesk', 'sans-serif'],
               mono: ['JetBrains Mono', 'monospace'],
             },
             colors: {
-              glass: 'rgba(15, 23, 42, 0.6)', 
-              'glass-border': 'rgba(255, 255, 255, 0.08)',
-              'glass-hover': 'rgba(255, 255, 255, 0.12)',
-              primary: '#38bdf8',
-              secondary: '#6366f1',
+              glass: 'rgba(255, 255, 255, 0.85)', 
+              'glass-border': 'rgba(0, 0, 0, 0.08)',
+              'glass-hover': 'rgba(0, 0, 0, 0.04)',
+              primary: '#0284c7',
+              secondary: '#4f46e5',
             }
           }
         }
@@ -30,24 +30,24 @@
     </script>
     <style>
       :root {
-        --bg-color: #020617;
-        --accent-primary: #38bdf8;
-        --accent-secondary: #6366f1;
-        --glass-bg: rgba(15, 23, 42, 0.7);
-        --glass-border: rgba(255, 255, 255, 0.08);
+        --bg-color: #f8fafc;
+        --accent-primary: #0284c7;
+        --accent-secondary: #4f46e5;
+        --glass-bg: rgba(255, 255, 255, 0.85);
+        --glass-border: rgba(0, 0, 0, 0.08);
       }
 
       body {
         background-color: var(--bg-color);
         background-image: 
-          linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px),
-          radial-gradient(circle at 50% -20%, rgba(56, 189, 248, 0.15) 0%, transparent 80%),
-          radial-gradient(circle at 0% 100%, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
+          linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+          radial-gradient(circle at 50% -20%, rgba(2, 132, 199, 0.08) 0%, transparent 80%),
+          radial-gradient(circle at 0% 100%, rgba(79, 70, 229, 0.05) 0%, transparent 50%);
         background-size: 40px 40px, 40px 40px, 100% 100%, 100% 100%;
         background-attachment: fixed;
-        color: #f1f5f9;
-        font-family: 'Outfit', sans-serif;
+        color: #0f172a;
+        font-family: 'Inter', sans-serif;
         overflow-x: hidden;
       }
 
@@ -61,13 +61,13 @@
         height: 100%;
         background: linear-gradient(
           to bottom,
-          rgba(18, 16, 16, 0) 50%,
-          rgba(0, 0, 0, 0.05) 50%
+          rgba(255, 255, 255, 0) 50%,
+          rgba(0, 0, 0, 0.02) 50%
         );
         background-size: 100% 4px;
         z-index: 100;
         pointer-events: none;
-        opacity: 0.3;
+        opacity: 0.5;
       }
 
       h1, h2, h3, h4, .font-display {
@@ -80,7 +80,7 @@
         backdrop-filter: blur(24px);
         -webkit-backdrop-filter: blur(24px);
         border: 1px solid var(--glass-border);
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
         position: relative;
         overflow: hidden;
       }
@@ -95,7 +95,7 @@
         background: linear-gradient(
           90deg,
           transparent,
-          rgba(255, 255, 255, 0.03),
+          rgba(255, 255, 255, 0.4),
           transparent
         );
         transition: 0.5s;
@@ -167,7 +167,7 @@
         width: 100%;
         height: 4px;
         cursor: pointer;
-        background: rgba(255,255,255,0.1);
+        background: rgba(0,0,0,0.1);
         border-radius: 2px;
       }
     </style>

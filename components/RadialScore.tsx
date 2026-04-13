@@ -54,7 +54,7 @@ const RadialScore: React.FC<RadialScoreProps> = ({ score }) => {
         <path
           d="M 30 110 A 80 80 0 0 1 190 110"
           fill="none"
-          stroke="rgba(255,255,255,0.05)"
+          stroke="rgba(0,0,0,0.05)"
           strokeWidth={strokeWidth}
           strokeLinecap="round"
         />
@@ -88,7 +88,7 @@ const RadialScore: React.FC<RadialScoreProps> = ({ score }) => {
               y1={y1}
               x2={x2}
               y2={y2}
-              stroke={i * 10 <= score ? getColor(score) : "rgba(255,255,255,0.1)"}
+              stroke={i * 10 <= score ? getColor(score) : "rgba(0,0,0,0.1)"}
               strokeWidth="1"
               className="transition-colors duration-500"
             />
@@ -99,13 +99,13 @@ const RadialScore: React.FC<RadialScoreProps> = ({ score }) => {
       {/* Score Display */}
       <div className="absolute inset-0 flex flex-col items-center justify-center pt-8 pointer-events-none z-20">
         <div className="flex items-baseline">
-          <motion.span className="text-6xl font-display font-bold text-white tracking-tighter">
+          <motion.span className="text-6xl font-display font-bold text-slate-900 tracking-tighter">
             {displayScore}
           </motion.span>
-          <span className="text-xl font-mono font-bold text-slate-600 ml-1">%</span>
+          <span className="text-xl font-mono font-bold text-slate-400 ml-1">%</span>
         </div>
         <div className="flex flex-col items-center">
-          <div className="h-px w-12 bg-gradient-to-r from-transparent via-white/20 to-transparent my-2"></div>
+          <div className="h-px w-12 bg-gradient-to-r from-transparent via-slate-300 to-transparent my-2"></div>
           <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-[0.4em]">Reality Index</span>
         </div>
       </div>
@@ -115,7 +115,7 @@ const RadialScore: React.FC<RadialScoreProps> = ({ score }) => {
         {[...Array(5)].map((_, i) => (
           <div 
             key={i} 
-            className={`w-1 h-1 rounded-full transition-all duration-500 ${i * 20 < score ? 'bg-sky-500 shadow-[0_0_5px_rgba(56,189,248,0.5)]' : 'bg-slate-800'}`}
+            className={`w-1 h-1 rounded-full transition-all duration-500 ${i * 20 < score ? 'bg-sky-500 shadow-[0_0_5px_rgba(56,189,248,0.5)]' : 'bg-slate-300'}`}
           ></div>
         ))}
       </div>
