@@ -4,7 +4,7 @@
 
 Reality Check AI is a planning audit tool that evaluates whether your goals are actually feasible—not whether they sound inspiring. It strips away optimism bias and motivation theater to tell you what will actually happen given time, money, skills, and human limits.
 
-> **Built during Google for Startups: Prompt to Prototype** — A hands-on program where I learned, explored, and built a product that matters.
+> **Built during Google for Startups: Prompt to Prototype** — A hands-on program where I learned, explored, and built my first project that matters.
 ---
 ## Screenshots
 
