@@ -8,26 +8,15 @@ Reality Check AI is a planning audit tool that evaluates whether your goals are 
 ---
 ## Screenshots
 
-Get a visual walkthrough of how Reality Check AI works:
+Get a visual overview of Reality Check AI:
 
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/f8ce33a1-7dfc-4ec2-9c50-7b00fda1b71a" width="700" alt="Reality Check AI - Input Screen" />
-  <p><em>Step 1: Describe your plan and constraints</em></p>
-</div>
+| Describe your plan and constraints | Get the feasibility analysis |
+|-------------|--------------|
+| <img src="https://github.com/user-attachments/assets/f8ce33a1-7dfc-4ec2-9c50-7b00fda1b71a" width="100%"/> | <img src="https://github.com/user-attachments/assets/93816438-2f72-4041-8627-77cc535dbc49" width="100%"/> |
 
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/93816438-2f72-4041-8627-77cc535dbc49" width="700" alt="Reality Check AI - Analysis" />
-  <p><em>Step 2: Get the feasibility analysis</em></p>
-</div>
-
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/5c31657a-5172-4203-b3f1-b2f19217861f" width="700" alt="Reality Check AI - Risks and Alternatives" />
-  <p><em>Step 3: Review risks and alternative paths</em></p>
-</div>
-
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/b3fca002-e5aa-48e2-b706-6b38bbdb531f" width="700" alt="Reality Check AI - Stop Signals" />
-  <p><em>Step 4: Understand when to stop and pivot</em></p>
+| Understand when to stop and pivot | Review risks and alternative paths |
+|-------|-------------|
+| <img src="https://github.com/user-attachments/assets/5c31657a-5172-4203-b3f1-b2f19217861f" width="100%"/> | <img src="https://github.com/user-attachments/assets/b3fca002-e5aa-48e2-b706-6b38bbdb531f" width="100%"/> |erstand when to stop and pivot</em></p>
 </div>
 
 ---
