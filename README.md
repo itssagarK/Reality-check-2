@@ -179,10 +179,6 @@ Reality Check AI was built as part of **Google for Startups: Prompt to Prototype
 
 The certification and support from Google for Startups and Scaler pushed me to think deeper about what actually helps people succeed, rather than what makes them feel good in the moment.
 
-## License
-
-[Check the repository for license details]
-
 ## Contributing
 
 Found a bug? Have feedback? Want to improve the logic? Contributions are welcome.
