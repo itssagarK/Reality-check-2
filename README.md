@@ -5,7 +5,32 @@
 Reality Check AI is a planning audit tool that evaluates whether your goals are actually feasible—not whether they sound inspiring. It strips away optimism bias and motivation theater to tell you what will actually happen given time, money, skills, and human limits.
 
 > **Built during Google for Startups: Prompt to Prototype** — A hands-on program where I learned, explored, and built a product that matters.
+---
+## Screenshots
 
+Get a visual walkthrough of how Reality Check AI works:
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/f8ce33a1-7dfc-4ec2-9c50-7b00fda1b71a" width="700" alt="Reality Check AI - Input Screen" />
+  <p><em>Step 1: Describe your plan and constraints</em></p>
+</div>
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/93816438-2f72-4041-8627-77cc535dbc49" width="700" alt="Reality Check AI - Analysis" />
+  <p><em>Step 2: Get the feasibility analysis</em></p>
+</div>
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/5c31657a-5172-4203-b3f1-b2f19217861f" width="700" alt="Reality Check AI - Risks and Alternatives" />
+  <p><em>Step 3: Review risks and alternative paths</em></p>
+</div>
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/b3fca002-e5aa-48e2-b706-6b38bbdb531f" width="700" alt="Reality Check AI - Stop Signals" />
+  <p><em>Step 4: Understand when to stop and pivot</em></p>
+</div>
+
+---
 ## What This Does
 
 Most planning fails silently. You start with ambition, ignore constraints, and months later you're burnt out with half-finished projects. Reality Check AI stops that early by auditing your plan before failure happens.
@@ -123,6 +148,7 @@ Defines clear, measurable conditions for when continuing would be a waste of tim
   2. Partner with someone else to split the workload and dependencies
 - **Stop signal:** If by week 6 you have less than 40% of core features working, the timeline was unrealistic from the start. Either cut scope or extend the deadline now—don't keep pretending you're ahead of schedule.
 
+
 ## Installation
 
 Clone the repository:
@@ -164,6 +190,9 @@ Reality Check AI was built as part of **Google for Startups: Prompt to Prototype
 
 The certification and support from Google for Startups and Scaler pushed me to think deeper about what actually helps people succeed, rather than what makes them feel good in the moment.
 
+## License
+
+[Check the repository for license details]
 
 ## Contributing
 
