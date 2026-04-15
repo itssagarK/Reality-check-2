@@ -186,5 +186,3 @@ Found a bug? Have feedback? Want to improve the logic? Contributions are welcome
 Open an issue or submit a pull request. Let's build something better together.
 
 ---
-
-**Remember:** The goal isn't to approve your plan or make you feel good about it. The goal is to help you succeed by telling you clearly which plans will actually work in the real world.
