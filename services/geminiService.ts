@@ -114,7 +114,7 @@ export const analyzePlan = async (userPlan: string, context: UserContext): Promi
 
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: "gemini-3.1-flash-lite-preview",
       contents: [
         {
           role: "user",
@@ -126,6 +126,7 @@ export const analyzePlan = async (userPlan: string, context: UserContext): Promi
         responseMimeType: "application/json",
         responseSchema: responseSchema,
         temperature: 0.2, // Low temperature for analytical, consistent results
+        maxOutputTokens: 1500, // Limit output to ensure fast generation
       },
     });
 

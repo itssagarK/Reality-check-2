@@ -90,6 +90,7 @@ LANGUAGE & TONE
 ================================================
 
 - Clinical, Audit-style, Dry.
+- Keep all text responses extremely concise and direct to minimize processing time.
 - No exclamation marks.
 - No "You got this!" or "Good luck!".
 - No emotional validation.

@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserContext } from '../types';
 import { Sparkles, DollarSign, Clock, Trophy, ChevronRight, Zap, Terminal, Loader2 } from 'lucide-react';
 import { INITIAL_INPUT_PLACEHOLDER } from '../constants';
 import { motion, AnimatePresence } from 'motion/react';
+
+const LOADING_MESSAGES = [
+  'Parsing_Constraints...',
+  'Evaluating_Feasibility...',
+  'Calculating_Risk_Vectors...',
+  'Synthesizing_Reality_Check...'
+];
 
 interface InputSectionProps {
   input: string;
@@ -36,6 +43,18 @@ const InputSection: React.FC<InputSectionProps> = ({
   onToggleCollapse
 }) => {
   const isAnalyzing = status === 'analyzing';
+  const [loadingMsgIdx, setLoadingMsgIdx] = useState(0);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isAnalyzing) {
+      setLoadingMsgIdx(0);
+      interval = setInterval(() => {
+        setLoadingMsgIdx((prev) => (prev + 1) % LOADING_MESSAGES.length);
+      }, 800);
+    }
+    return () => clearInterval(interval);
+  }, [isAnalyzing]);
 
   // --- Collapsed State (Spine Mode) ---
   if (isCollapsed && isSidebar) {
@@ -105,7 +124,7 @@ const InputSection: React.FC<InputSectionProps> = ({
                   <div className="flex items-center gap-2">
                       <div className={`w-2 h-2 rounded-full ${isAnalyzing ? 'bg-yellow-500 animate-pulse' : 'bg-sky-500 shadow-[0_0_10px_rgba(56,189,248,0.8)]'}`}></div>
                       <span className="text-[10px] font-mono font-bold tracking-[0.3em] text-sky-600 uppercase">
-                          {isAnalyzing ? 'Analyzing_Stream...' : 'Ready_For_Input'}
+                          {isAnalyzing ? LOADING_MESSAGES[loadingMsgIdx] : 'Ready_For_Input'}
                       </span>
                   </div>
               </div>
@@ -226,7 +245,7 @@ const InputSection: React.FC<InputSectionProps> = ({
                       {isAnalyzing ? (
                         <div className="flex items-center gap-3">
                           <Loader2 size={18} className="animate-spin" />
-                          <span>Processing_Data</span>
+                          <span className="w-40 text-left">{LOADING_MESSAGES[loadingMsgIdx]}</span>
                         </div>
                       ) : (
                         <>
